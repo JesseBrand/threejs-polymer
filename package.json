@@ -1,0 +1,21 @@
+{
+  "name": "WebglPolymerExample",
+  "version": "0.0.1",
+  "description": "An example polymer project with standardized project structure.",
+  "author": "Jesse Brand",
+  "main": "demo/index.html",
+  "directories": {
+    "serve": ".",
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "express": "~4.12.4",
+    "polymer-serve": "^0.0.38",
+    "web-component-tester": "^4.3.1"
+  },
+  "scripts": {
+    "serve": "polymer serve",
+    "test": "wct"
+  }
+}

@@ -1,0 +1,19 @@
+<link rel="import" href="../jb-3js-helper-position.html" />
+<link rel="import" href="../jb-3js-helper-size.html" />
+<link rel="import" href="../jb-3js-helper-color.html" />
+<script>
+    'use strict';
+
+    Polymer({
+        is: 'jb-3js-skybox',
+        behaviors: [PositionBehavior, SizeBehavior, ColorBehavior],
+        attached: function() {
+            var material = new THREE.MeshBasicMaterial({color: this.color});
+            material.side = THREE.BackSide;
+            var geometry = new THREE.CubeGeometry(this.width, this.height, this.depth);
+            var mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(this.x, this.y, this.z);
+            this.fire('addToScene', mesh);
+        }
+    });
+</script>

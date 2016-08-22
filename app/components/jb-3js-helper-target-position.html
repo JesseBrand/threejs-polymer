@@ -1,0 +1,26 @@
+<script>
+    var TargetPositionBehavior = {
+        properties: {
+            targetX: {
+                type: 'Number',
+                value: 0
+            },
+            targetY: {
+                type: 'Number',
+                value: 0
+            },
+            targetZ: {
+                type: 'Number',
+                value: 0
+            }
+        },
+        ready: function() {
+            this.targetX = parseInt(this.targetX);
+            this.targetY = parseInt(this.targetY);
+            this.targetZ = parseInt(this.targetZ);
+        },
+        getTargetPosition: function() {
+            return {x: this.targetX, y: this.targetY, z: this.targetZ};
+        }
+    }
+</script>

@@ -1,0 +1,29 @@
+<script>
+    // Be sure to position this behavior after the position behavior
+    var ClampBehavior = {
+        properties: {
+            clamp: 'Boolean'
+        },
+        attached: function() {
+            this.clamp = (typeof this.clamp) !== 'undefined' && this.clamp !== 'false';
+            if (this.clamp) {
+                var parent = this.parentNode;
+                this.calculateClamp(parent);
+                var self = this;
+                parent.addEventListener('position-changed', function(event) {
+                    if (event.detail === parent) {
+                        self.calculateClamp(parent);
+                    }
+                });
+            }
+        },
+        calculateClamp: function(parent) {
+            var localHeight = this.height ? this.height / 2 : 0;
+            if (parent.getPositionTop) {
+                this.y = parent.getPositionTop(this.x, this.z) + localHeight;
+            } else if ((typeof parent.y) !== 'undefined' && (typeof parent.height) !== 'undefined') {
+                this.y = parent.y + (parent.height / 2) + localHeight;
+            }
+        }
+    }
+</script>

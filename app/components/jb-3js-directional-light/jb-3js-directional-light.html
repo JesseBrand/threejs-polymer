@@ -1,0 +1,50 @@
+<link rel="import" href="../jb-3js-helper-position.html" />
+<link rel="import" href="../jb-3js-helper-target-position.html" />
+<link rel="import" href="../jb-3js-helper-color.html" />
+<link rel="import" href="../jb-3js-helper-shadow.html" />
+<link rel="import" href="../jb-3js-helper-debug.html" />
+<script>
+'use strict';
+
+Polymer({
+    is: 'jb-3js-directional-light',
+    properties: {
+        cameraReach: {
+            type: 'Number',
+            value: 500
+        },
+        mapSize: {
+            type: 'Number',
+            value: 1024
+        }
+    },
+    behaviors: [PositionBehavior, TargetPositionBehavior, ColorBehavior, DebugBehavior, ShadowBehavior],
+    attached: function() {
+        var light = new THREE.DirectionalLight(this.color);
+        light.position.set(this.x, this.y, this.z);
+        light.target.position.set(this.targetX, this.targetY, this.targetZ);
+//        console.log(light.position, light.target.position);
+        light.castShadow = this.shadow;
+        this.cameraReach = parseInt(this.cameraReach);
+//        light.shadow.camera.near = 0;
+        light.shadow.camera.position.set(this.x, this.y, this.z);
+        light.shadow.camera.near = -this.cameraReach;
+        light.shadow.camera.far = this.cameraReach;
+        light.shadow.camera.left = -this.cameraReach;
+        light.shadow.camera.right = this.cameraReach;
+        light.shadow.camera.top = this.cameraReach;
+        light.shadow.camera.bottom = -this.cameraReach;
+
+        light.shadow.mapSize.width = this.mapSize;
+        light.shadow.mapSize.height = this.mapSize;
+//        console.log(light);
+        this.fire('addToScene', light);
+
+        if (this.debug) {
+            var helper = new THREE.CameraHelper(light.shadow.camera);
+//            console.log(light.shadow.camera, helper);
+            this.fire('addToScene', new THREE.CameraHelper(light.shadow.camera));
+        }
+    }
+});
+</script>

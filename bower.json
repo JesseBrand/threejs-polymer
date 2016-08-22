@@ -1,0 +1,19 @@
+{
+  "name": "webglpolymerexample",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.3",
+    "paper-card": "PolymerElements/paper-card#^1.0.0",
+    "threejs": "r79"
+  },
+  "devDependencies": {
+    "polymer": "Polymer/polymer#^1.4.0",
+    "web-component-tester": "^4.0.0"
+  },
+    "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

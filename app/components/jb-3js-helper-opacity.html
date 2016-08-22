@@ -1,0 +1,14 @@
+<script>
+    var OpacityBehavior = {
+        properties: {
+            opacity: {
+                type: 'Number',
+                value: 1
+            }
+        },
+        ready: function() {
+            this.opacity = parseFloat(this.opacity);
+            this.transparent = this.opacity > 0;
+        }
+    }
+</script>

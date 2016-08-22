@@ -1,0 +1,184 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html" />
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html" />
+<link rel="import" href="../jb-3js-helper-debug.html" />
+<script src="../../../bower_components/threejs/build/three.js"></script>
+
+<dom-module id="jb-3js-container">
+    <style>
+        :host {
+            width: 100%;
+            height: 100%;
+            display: inline-block;
+            box-sizing: border-box;
+            position: relative;
+        }.blocker, .instructions {
+             width: 100%;
+             height: 100%;
+         }
+        .glRenderer {
+            z-index: 1;
+            pointer-events: none;
+        }
+        .cssRenderer {
+            z-index: 2;
+        }
+        .blocker {
+            z-index: 3;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .instructions {
+            display: -webkit-box;
+            display: -moz-box;
+            display: box;
+            -webkit-box-orient: horizontal;
+            -moz-box-orient: horizontal;
+            box-orient: horizontal;
+            -webkit-box-pack: center;
+            -moz-box-pack: center;
+            box-pack: center;
+            -webkit-box-align: center;
+            -moz-box-align: center;
+            box-align: center;
+            text-align: center;
+            cursor: pointer;
+            font-size: 40;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        .glRenderer, .cssRenderer, .blocker {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+    <template>
+        <paper-card>
+            <div class="card-content">
+                <content></content>
+            </div>
+        </paper-card>
+        <div class="blocker">
+            <div class="instructions">Click here</div>
+        </div>
+    </template>
+</dom-module>
+
+<script>
+    (function() {
+        var width = window.innerWidth; // TODO: dynamically
+        var height = window.innerHeight;
+
+        var clearColor;
+
+        var scene;
+        var cssScene;
+
+        var glRenderer;
+        var glCameraView;
+        var cssRenderer;
+        var cssCameraView;
+
+        var cameraHandler;
+        var self;
+
+        var debug;
+
+        var controller = {
+            _initScene: function() {
+                // TODO: Camera configurable
+                camera = new THREE.PerspectiveCamera(90, width / height, .1, 1000);
+                this._createGLRenderer();
+            },
+            _finalize: function() {
+                // finalize with attribute data
+                if (typeof clearColor !== 'undefined') {
+                    glRenderer.setClearColor( clearColor, 1);
+                }
+            },
+            _createGLRenderer: function() {
+                scene = new THREE.Scene();
+
+                glRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
+                glRenderer.setSize(width, height);
+                glRenderer.domElement.id = 'glRenderer'; // TODO: Remove id
+
+                glRenderer.shadowMap.enabled = true;
+                glRenderer.shadowMap.type = THREE.PCFShadowMap;
+                glRenderer.shadowMap.soft = true;
+                glRenderer.gammaOutput = true;
+
+                glCameraView = glRenderer;
+            },
+//            initCssRenderer: function() {
+//                if (cssRenderer) {
+//                    return;
+//                }
+//                createCssRenderer();
+//                document.body.appendChild(cssRenderer.domElement);
+//                cssRenderer.domElement.appendChild(glRenderer.domElement);
+//            },
+            addToScene: function(mesh) {
+                scene.add(mesh);
+                if (debug) {
+                    console.log('added', mesh);
+                }
+            },
+            registerCameraHandler: function(handler) {
+                cameraHandler = handler;
+                handler.init({camera: camera, blocker: this.blocker, instructions: this.instructions});
+            },
+            _start: function(container) {
+                if (debug) {
+                    scene.add(new THREE.AxisHelper(100));
+                }
+                this.blocker = container.querySelector('.blocker');
+                this.blocker.style.width = width;
+                this.blocker.style.height = height;
+                this.instructions = container.querySelector('.instructions');
+
+                var card = container.querySelector('.card-content');
+                card.appendChild(glRenderer.domElement);
+                self = this;
+                self._render();
+            },
+            _render: function() {
+                requestAnimationFrame(self._render);
+
+                if (cameraHandler) {
+                    cameraHandler.animate();
+                }
+
+                glCameraView.render(scene, camera);
+                if (cssCameraView) {
+                    cssCameraView.render(cssScene, camera);
+                }
+            }
+        };
+        Polymer({
+            is: 'jb-3js-container',
+            behaviors: [DebugBehavior],
+            properties: {
+                clearColor: Number
+            },
+            created: function() {
+                controller._initScene();
+                this.addEventListener('addToScene', function(event) {
+                    controller.addToScene(event.detail);
+                });
+                this.addEventListener('registerCameraHandler', function(event) {
+                    controller.registerCameraHandler(event.detail);
+                });
+            },
+            ready: function() {
+                clearColor = this.clearColor;
+                controller._finalize();
+                debug = this.debug;
+            },
+            attached: function() {
+                var container = Polymer.dom(this.root);
+                controller._start(container);
+            }
+        });
+
+    })();
+</script>

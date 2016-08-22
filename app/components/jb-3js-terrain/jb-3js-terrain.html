@@ -1,0 +1,103 @@
+<link rel="import" href="../jb-3js-helper-position.html" />
+<link rel="import" href="../jb-3js-helper-size.html" />
+<link rel="import" href="../jb-3js-helper-color.html" />
+<link rel="import" href="../jb-3js-helper-shadow.html" />
+<script src="improved-noise.js"></script>
+<script src="terrain-shaders.js"></script>
+<script>
+    'use strict';
+
+    (function() {
+        Polymer({
+            is: 'jb-3js-terrain',
+            properties: {
+                scale: 'Number',
+                shaderName: 'String'
+            },
+            behaviors: [PositionBehavior, SizeBehavior, ColorBehavior, ShadowBehavior],
+            ready: function() {
+                if (this.shaderName === 'terra') {
+                    this.shader = TerrainShaders.createTerraShader(this.height);
+                } else {
+                    this.shader = TerrainShaders.createStandardShader(this.color);
+                }
+                this.addEventListener('modify-terrain', function(event) {
+                    event.detail(this);
+                    event.stopPropagation();
+                });
+            },
+            attached: function() {
+                var data = generateHeight(this.width, this.depth, this.height);
+                var geometry = new THREE.PlaneBufferGeometry(this.width, this.depth, this.width - 1, this.depth - 1 );
+                geometry.rotateX(-Math.PI / 2);
+                this.vertices = geometry.attributes.position.array;
+                var colors = new Float32Array(this.vertices.length * 3);
+                for (var i = 0, j = 0; i < this.vertices.length; i++, j += 3) {
+                    this.vertices[j + 1] = data[i];
+                    colors[i] = 1;
+                }
+                // colors
+                for (var i = 0; i < this.vertices.length; i += 3) {
+                    var y = this.vertices[i + 1];
+                    var color = this.shader.getColorAt(y);
+                    colors[i] = color[0];
+                    colors[i + 1] = color[1];
+                    colors[i + 2] = color[2];
+                }
+                var scale = this.scale;
+                if (scale) {
+                    for (var i = 0; i < this.vertices.length; i += 3) {
+                        this.vertices[i] *= scale;
+                        this.vertices[i + 2] *= scale;
+                    }
+                }
+                geometry.addAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+
+                geometry.computeFaceNormals();
+                geometry.computeVertexNormals();
+
+                this.mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({vertexColors: THREE.VertexColors}));
+                this.mesh.name = 'Terrain';
+                this.mesh.position.set(this.x, this.y, this.z);
+                this.mesh.castShadow = this.shadow;
+                this.mesh.receiveShadow = this.shadow;
+
+                this.fire('addToScene', this.mesh);
+            },
+            getPositionTop: function(rX, rZ) {
+                var closestY = undefined;
+                var closestDistance = undefined;
+                for (var i = 0; i < this.vertices.length / 3; i++) {
+                    var pX = this.vertices[i * 3] + this.x;
+                    var pZ = this.vertices[i * 3 + 2] + this.z;
+                    var dist = Math.sqrt(Math.pow(Math.abs(pX - rX), 2) + Math.pow(Math.abs(pZ - rZ), 2));
+                    if (closestDistance === undefined || dist < closestDistance) {
+                        closestDistance = dist;
+                        closestY = this.vertices[i * 3 + 1];
+                    }
+                }
+                return closestY;
+            }
+        });
+
+        function generateHeight(width, depth, maxHeight) {
+            var size = width * depth;
+            var data = new Uint8Array( size );
+            var perlin = new ImprovedNoise();
+            var quality = maxHeight;
+            var passes = 4;
+            var heightFactor = .25;
+            var z = Math.random() * 100;
+            for ( var j = 0; j < passes; j ++ ) {
+                for ( var i = 0; i < size; i ++ ) {
+                    var x = i % width;
+                    var y = ~~ ( i / width );
+                    data[ i ] += Math.abs(perlin.noise( x / quality, y / quality, z ) * quality * heightFactor);
+                }
+                quality /= 2;
+            }
+            return data;
+        }
+    }());
+</script>

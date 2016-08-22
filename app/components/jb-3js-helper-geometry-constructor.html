@@ -1,0 +1,14 @@
+<script>
+    var GeometryConstructorBehavior = {
+        createGeometryConstructor: function(geometry) {
+            return {
+                vertex: function(x, y, z) {
+                    geometry.vertices.push(new THREE.Vector3(x, y, z));
+                },
+                face: function(v0, v1, v2) {
+                    geometry.faces.push(new THREE.Face3(v0, v1, v2));
+                }
+            }
+        }
+    }
+</script>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Three.js example project</title>
+        <link rel="import" href="app/components/jb-3js-container/jb-3js-container.html" />
+        <link rel="import" href="app/components/jb-3js-skybox/jb-3js-skybox.html" />
+        <link rel="import" href="app/components/jb-3js-cube/jb-3js-cube.html" />
+        <link rel="import" href="app/components/jb-3js-pillar/jb-3js-pillar.html" />
+        <link rel="import" href="app/components/jb-3js-plane/jb-3js-plane.html" />
+        <link rel="import" href="app/components/jb-3js-sphere/jb-3js-sphere.html" />
+        <link rel="import" href="app/components/jb-3js-temple/jb-3js-temple.html" />
+        <link rel="import" href="app/components/jb-3js-triangular-prism/jb-3js-triangular-prism.html" />
+        <link rel="import" href="app/components/jb-3js-directional-light/jb-3js-directional-light.html" />
+        <link rel="import" href="app/components/jb-3js-terrain/jb-3js-terrain.html" />
+        <link rel="import" href="app/components/jb-3js-terrain-plateau/jb-3js-terrain-plateau.html" />
+        <link rel="import" href="app/components/jb-3js-shipcontrols/jb-3js-shipcontrols.html" />
+        <style>
+            body {
+                background-color: grey;
+            }
+        </style>
+    </head>
+    <body>
+        <jb-3js-container clear-color="0x000000">
+            <jb-3js-shipcontrols shadow  y="80" z="100"></jb-3js-shipcontrols>
+            <jb-3js-skybox color="0x1040d0" width="1024" depth="1024" height="514" y="255"></jb-3js-skybox>
+            <jb-3js-directional-light shadow color="0xffffe0" x="100" y="50" z="50" map-size="4096"></jb-3js-directional-light>
+            <jb-3js-plane shadow color="0x000000" width="1024" depth="1024"></jb-3js-plane>
+            <jb-3js-plane shadow color="0x2020e0" y="30" width="1024" depth="1024" opacity=".8"></jb-3js-plane>
+            <jb-3js-terrain shadow color="0x60d020" shader-name="terra" width="512" height="512" depth="512" scale="2">
+                <jb-3js-terrain-plateau y="75" z="-175" width="100" depth="200"></jb-3js-terrain-plateau>
+                <jb-3js-cube clamp shadow color="0xff0000" size="20" height="2">
+                    <jb-3js-sphere clamp shadow color="0x0000ff" radius="10">
+                        <jb-3js-triangular-prism clamp shadow color="0x00ff00" size="10"></jb-3js-triangular-prism>
+                    </jb-3js-sphere>
+                </jb-3js-cube>
+                <jb-3js-pillar clamp shadow color="0x505050" width="5" height="50" depth="5" x="-40" z="-50"></jb-3js-pillar>
+                <jb-3js-pillar clamp shadow color="0x505050" width="5" height="50" depth="5" x="40" z="-50"></jb-3js-pillar>
+                <jb-3js-pillar clamp shadow color="0x505050" width="5" height="50" depth="5" x="-40" z="0"></jb-3js-pillar>
+                <jb-3js-pillar clamp shadow color="0x505050" width="5" height="50" depth="5" x="40" z="0"></jb-3js-pillar>
+                <jb-3js-pillar clamp shadow color="0x505050" width="5" height="50" depth="5" x="-40" z="50"></jb-3js-pillar>
+                <jb-3js-pillar clamp shadow color="0x505050" width="5" height="50" depth="5" x="40" z="50"></jb-3js-pillar>
+                <jb-3js-temple clamp shadow color="0x505050" width="100" height="75" depth="200" z="-175"></jb-3js-temple>
+            </jb-3js-terrain>
+        </jb-3js-container>
+    </body>
+</html>

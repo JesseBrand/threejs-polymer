@@ -1,0 +1,10 @@
+<script>
+    var DebugBehavior = {
+        properties: {
+            debug: 'Boolean'
+        },
+        ready: function() {
+            this.debug = (typeof this.debug) !== 'undefined' && this.debug !== 'false';
+        }
+    }
+</script>

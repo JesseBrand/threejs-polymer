@@ -1,0 +1,23 @@
+<link rel="import" href="../jb-3js-helper-clamp.html" />
+<link rel="import" href="../jb-3js-helper-color.html" />
+<link rel="import" href="../jb-3js-helper-opacity.html" />
+<link rel="import" href="../jb-3js-helper-position.html" />
+<link rel="import" href="../jb-3js-helper-shadow.html" />
+<link rel="import" href="../jb-3js-helper-size.html" />
+<script>
+    'use strict';
+
+    Polymer({
+        is: 'jb-3js-cube',
+        behaviors: [PositionBehavior, SizeBehavior, ColorBehavior, ShadowBehavior, OpacityBehavior, ClampBehavior],
+        attached: function() {
+            var material = new THREE.MeshPhongMaterial({color: this.color, opacity: this.opacity, transparent: this.transparent});
+            var geometry = new THREE.CubeGeometry(this.width, this.height, this.depth);
+            this.mesh = new THREE.Mesh(geometry, material);
+            this.mesh.position.set(this.x, this.y, this.z);
+            this.mesh.castShadow = this.shadow;
+            this.mesh.receiveShadow = this.shadow;
+            this.fire('addToScene', this.mesh);
+        }
+    });
+</script>

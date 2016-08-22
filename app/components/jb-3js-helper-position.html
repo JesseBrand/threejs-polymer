@@ -1,0 +1,38 @@
+<script>
+    var PositionBehavior = {
+        properties: {
+            x: {
+                type: 'Number',
+                value: 0,
+                notify: true
+            },
+            y: {
+                type: 'Number',
+                value: 0,
+                notify: true
+            },
+            z: {
+                type: 'Number',
+                value: 0,
+                notify: true
+            }
+        },
+        observers: [
+            'positionChanged(x, y, z)'
+        ],
+        ready: function() {
+            this.x = parseInt(this.x);
+            this.y = parseInt(this.y);
+            this.z = parseInt(this.z);
+        },
+//        getPosition: function() {
+//            return {x: this.x, y: this.y, z: this.z};
+//        },
+        positionChanged: function(x, y, z) {
+            if (this.mesh) {
+                this.mesh.position.set(x, y, z);
+            }
+            this.fire('position-changed', this);
+        }
+    }
+</script>
