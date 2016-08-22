@@ -21,10 +21,13 @@
                         <jb-3js-pillar clamp shadow="{{shadow}}" color="{{color}}" width="{{pillarWidth}}" height="{{pillarHeight}}" depth="{{pillarWidth}}" x="{{rightPillarX}}" z="{{z}}"></jb-3js-pillar>
                         <jb-3js-pillar clamp shadow="{{shadow}}" color="{{color}}" width="{{pillarWidth}}" height="{{pillarHeight}}" depth="{{pillarWidth}}" x="{{leftPillarX}}" z="{{backPillarZ}}"></jb-3js-pillar>
                         <jb-3js-pillar clamp shadow="{{shadow}}" color="{{color}}" width="{{pillarWidth}}" height="{{pillarHeight}}" depth="{{pillarWidth}}" x="{{rightPillarX}}" z="{{backPillarZ}}"></jb-3js-pillar>
+                        <content select=".content"></content>
                         <jb-3js-spacer clamp height="{{pillarHeight}}" x="{{x}}" z="{{z}}">
                             <jb-3js-cube clamp shadow="{{shadow}}" color="{{color}}" x="{{x}}" z="{{z}}" width="{{width}}" height="{{stepHeight}}" depth="{{step4Depth}}">
                                 <jb-3js-triangular-prism clamp shadow="{{shadow}}" color="{{color}}" x="{{x}}" z="{{z}}" width="{{width}}" height="{{roofInnerHeight}}" depth="{{roofInnerDepth}}"></jb-3js-triangular-prism>
-                                <jb-3js-hollow-triangular-prism clamp shadow="{{shadow}}" color="{{color}}" x="{{x}}" z="{{z}}" width="{{width}}" height="{{roofOuterHeight}}" depth="{{step4Depth}}" thickness="{{stepHeight}}"></jb-3js-hollow-triangular-prism>
+                                <jb-3js-hollow-triangular-prism clamp shadow="{{shadow}}" color="{{color}}" x="{{x}}" z="{{z}}" width="{{width}}" height="{{roofOuterHeight}}" depth="{{step4Depth}}" thickness="{{stepHeight}}">
+                                    <content></content>
+                                </jb-3js-hollow-triangular-prism>
                             </jb-3js-cube>
                         </jb-3js-spacer>
                     </jb-3js-cube>
