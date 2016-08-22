@@ -14,6 +14,7 @@
             var material = new THREE.MeshPhongMaterial({color: this.color, opacity: this.opacity, transparent: this.transparent});
             var geometry = new THREE.CubeGeometry(this.width, this.height, this.depth);
             this.mesh = new THREE.Mesh(geometry, material);
+            this.mesh.name = 'Cube';
             this.mesh.position.set(this.x, this.y, this.z);
             this.mesh.castShadow = this.shadow;
             this.mesh.receiveShadow = this.shadow;
