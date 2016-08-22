@@ -33,10 +33,10 @@
                         if (self.mode === 'eq' || (self.mode === 'min' && y < self.y) || (self.mode === 'max' && y > self.y)) {
                             posArray[i * 3 + 1] = self.y;
                         }
+                        colorArray[i * 3] = color[0];
+                        colorArray[i * 3 + 1] = color[1];
+                        colorArray[i * 3 + 2] = color[2];
                     }
-                    colorArray[i * 3] = color[0];
-                    colorArray[i * 3 + 1] = color[1];
-                    colorArray[i * 3 + 2] = color[2];
                 }
                 geometry.computeFaceNormals();
                 geometry.computeVertexNormals();
