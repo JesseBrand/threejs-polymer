@@ -3,3 +3,10 @@
 -flashing
 -cloud
 -textures
+-add car
+ -add animation
+ -add terrain clamping
+-add modifiers
+ -stop bubbling
+-stacking and content
+-reflecting water
