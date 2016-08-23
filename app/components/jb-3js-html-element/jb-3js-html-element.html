@@ -1,0 +1,45 @@
+<link rel="import" href="../modifiers/jb-3js-transformation.html" />
+<link rel="import" href="../jb-3js-plane/jb-3js-plane.html" />
+<link rel="import" href="../jb-3js-helper-clamp.html" />
+<link rel="import" href="../jb-3js-helper-position.html" />
+<link rel="import" href="../jb-3js-helper-size.html" />
+<dom-module id="jb-3js-html-element">
+    <template>
+        <jb-3js-transformation x="{{x}}" y="{{y}}" z="{{z}}" rotation-x="90">
+            <jb-3js-plane color="0x000000" opacity="0" width="{{width}}" depth="{{depth}}"></jb-3js-plane>
+            <content></content>
+        </jb-3js-transformation>
+    </template>
+</dom-module>
+<script>
+    'use strict';
+
+    Polymer({
+        is: 'jb-3js-html-element',
+        behaviors: [PositionBehavior, SizeBehavior, ClampBehavior],
+        properties: {
+            siteScaleFactor: {
+                type: Number,
+                value: 1
+            },
+            url: String
+        },
+        attached: function() {
+            var siteWidth = this.width * this.siteScaleFactor;
+            var siteHeight = this.depth * this.siteScaleFactor;
+            var element = document.createElement('iframe');
+            element.src = this.url;
+            element.width = siteWidth;
+            element.height = siteHeight;
+            element.style = 'width:"' + siteWidth + 'px"; height:"' + siteHeight + 'px"';
+            this.cssMesh = new THREE.CSS3DObject(element);
+            this.cssMesh.position.x = this.x;
+            this.cssMesh.position.y = this.y;
+            this.cssMesh.position.z = this.z;
+            this.cssMesh.scale.x /= this.siteScaleFactor;
+            this.cssMesh.scale.y /= this.siteScaleFactor;
+            this.cssMesh.scale.z /= this.siteScaleFactor;
+            this.fire('addCssToScene', this.cssMesh);
+        }
+    });
+</script>

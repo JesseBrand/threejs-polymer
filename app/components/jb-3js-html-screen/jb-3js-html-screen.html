@@ -1,0 +1,51 @@
+<link rel="import" href="../jb-3js-html-element/jb-3js-html-element.html" />
+<link rel="import" href="../jb-3js-helper-clamp.html" />
+<link rel="import" href="../jb-3js-helper-color.html" />
+<link rel="import" href="../jb-3js-helper-opacity.html" />
+<link rel="import" href="../jb-3js-helper-position.html" />
+<link rel="import" href="../jb-3js-helper-shadow.html" />
+<link rel="import" href="../jb-3js-helper-size.html" />
+<dom-module id="jb-3js-html-screen">
+    <template>
+        <jb-3js-cube shadow="{{shadow}}" color="{{color}}" x="{{x}}" y="{{y}}" z="{{z}}" width="{{width}}" height="{{height}}" depth="{{depth}}">
+            <content></content>
+        </jb-3js-cube>
+        <jb-3js-html-element x="{{x}}" y="{{y}}" z="{{screenZ}}" width="{{screenWidth}}" depth="{{screenHeight}}" url="{{url}}" site-scale-factor="{{siteScaleFactor}}"></jb-3js-html-element>
+    </template>
+</dom-module>
+<script>
+    'use strict';
+
+    Polymer({
+        is: 'jb-3js-html-screen',
+        behaviors: [PositionBehavior, SizeBehavior, ColorBehavior, ShadowBehavior, OpacityBehavior, ClampBehavior],
+        properties: {
+            screenWidth: {
+                type: Number,
+                computed: '_getScreenWidth(width)'
+            },
+            screenHeight: {
+                type: Number,
+                computed: '_getScreenHeight(height)'
+            },
+            screenZ: {
+                type: Number,
+                computed: '_getScreenZ(z, depth)'
+            },
+            url: String,
+            siteScaleFactor: {
+                type: Number,
+                value: 1
+            }
+        },
+        _getScreenWidth: function(width) {
+            return width * .9;
+        },
+        _getScreenHeight: function(height) {
+            return height * .9;
+        },
+        _getScreenZ: function(z, depth) {
+            return z + depth * .55;
+        }
+    });
+</script>
