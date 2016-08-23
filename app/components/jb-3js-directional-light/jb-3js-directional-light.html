@@ -23,10 +23,8 @@ Polymer({
         var light = new THREE.DirectionalLight(this.color);
         light.position.set(this.x, this.y, this.z);
         light.target.position.set(this.targetX, this.targetY, this.targetZ);
-//        console.log(light.position, light.target.position);
         light.castShadow = this.shadow;
         this.cameraReach = parseInt(this.cameraReach);
-//        light.shadow.camera.near = 0;
         light.shadow.camera.position.set(this.x, this.y, this.z);
         light.shadow.camera.near = -this.cameraReach;
         light.shadow.camera.far = this.cameraReach;
@@ -37,7 +35,6 @@ Polymer({
 
         light.shadow.mapSize.width = this.mapSize;
         light.shadow.mapSize.height = this.mapSize;
-//        console.log(light);
         this.fire('addToScene', light);
 
         if (this.debug) {
