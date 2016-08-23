@@ -8,6 +8,5 @@
  -add terrain clamping
 -add modifiers
  -stop bubbling
--stacking and content
 -reflecting water
 -make camera dynamic
