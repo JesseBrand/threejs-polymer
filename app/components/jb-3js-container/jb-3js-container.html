@@ -63,12 +63,11 @@
     </template>
 </dom-module>
 
+<script src="css-3d-renderer.js"></script>
 <script>
     (function() {
         var width = window.innerWidth; // TODO: dynamically
         var height = window.innerHeight;
-
-        var clearColor;
 
         var scene;
         var cssScene;
@@ -81,18 +80,20 @@
         var cameraHandler;
         var self;
 
-        var debug;
-
         var controller = {
             _initScene: function() {
                 // TODO: Camera configurable
                 camera = new THREE.PerspectiveCamera(90, width / height, .1, 1000);
                 this._createGLRenderer();
             },
-            _finalize: function() {
+            _finalize: function(detail) {
                 // finalize with attribute data
-                if (typeof clearColor !== 'undefined') {
-                    glRenderer.setClearColor( clearColor, 1);
+                this.debug = detail.debug;
+                if (typeof detail.cssRenderer !== 'undefined') {
+                    this._createCssRenderer();
+                }
+                if (typeof detail.clearColor !== 'undefined') {
+                    glRenderer.setClearColor(detail.clearColor, 1);
                 }
             },
             _createGLRenderer: function() {
@@ -100,7 +101,7 @@
 
                 glRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
                 glRenderer.setSize(width, height);
-                glRenderer.domElement.id = 'glRenderer'; // TODO: Remove id
+                glRenderer.domElement.className = 'glRenderer style-scope jb-3js-container';
 
                 glRenderer.shadowMap.enabled = true;
                 glRenderer.shadowMap.type = THREE.PCFShadowMap;
@@ -109,18 +110,25 @@
 
                 glCameraView = glRenderer;
             },
-//            initCssRenderer: function() {
-//                if (cssRenderer) {
-//                    return;
-//                }
-//                createCssRenderer();
-//                document.body.appendChild(cssRenderer.domElement);
-//                cssRenderer.domElement.appendChild(glRenderer.domElement);
-//            },
+            _createCssRenderer: function() {
+                cssScene = new THREE.Scene();
+
+                cssRenderer = new THREE.CSS3DRenderer();
+                cssRenderer.setSize(width, height);
+                cssRenderer.domElement.className = 'cssRenderer style-scope jb-3js-container';
+
+                cssCameraView = cssRenderer;
+            },
             addToScene: function(mesh) {
                 scene.add(mesh);
-                if (debug) {
-                    console.log('added', mesh);
+                if (this.debug) {
+                    console.log('added mesh', mesh);
+                }
+            },
+            addCssToScene: function(mesh) {
+                cssScene.add(mesh);
+                if (this.debug) {
+                    console.log('added css', mesh);
                 }
             },
             registerCameraHandler: function(handler) {
@@ -128,16 +136,22 @@
                 handler.init({camera: camera, blocker: this.blocker, instructions: this.instructions});
             },
             _start: function(container) {
-                if (debug) {
+                if (this.debug) {
                     scene.add(new THREE.AxisHelper(100));
                 }
+                this.content = container.querySelector('.card-content');
+                this.content.style.width = width + 'px';
+                this.content.style.height = height + 'px';
                 this.blocker = container.querySelector('.blocker');
-                this.blocker.style.width = width;
-                this.blocker.style.height = height;
                 this.instructions = container.querySelector('.instructions');
 
                 var card = container.querySelector('.card-content');
-                card.appendChild(glRenderer.domElement);
+                if (cssRenderer) {
+                    cssRenderer.domElement.appendChild(glRenderer.domElement);
+                    card.appendChild(cssRenderer.domElement);
+                } else {
+                    card.appendChild(glRenderer.domElement);
+                }
                 self = this;
                 self._render();
             },
@@ -158,21 +172,27 @@
             is: 'jb-3js-container',
             behaviors: [DebugBehavior],
             properties: {
-                clearColor: Number
+                clearColor: {
+                    type: Number,
+                    value: 0x000000
+                },
+                cssRenderer: Boolean
             },
             created: function() {
                 controller._initScene();
                 this.addEventListener('addToScene', function(event) {
                     controller.addToScene(event.detail);
                 });
+                this.addEventListener('addCssToScene', function(event) {
+                    console.log('event!');
+                    controller.addCssToScene(event.detail);
+                });
                 this.addEventListener('registerCameraHandler', function(event) {
                     controller.registerCameraHandler(event.detail);
                 });
             },
             ready: function() {
-                clearColor = this.clearColor;
-                controller._finalize();
-                debug = this.debug;
+                controller._finalize({clearColor: this.clearColor, cssRenderer: this.cssRenderer, debug: this.debug});
             },
             attached: function() {
                 var container = Polymer.dom(this.root);
