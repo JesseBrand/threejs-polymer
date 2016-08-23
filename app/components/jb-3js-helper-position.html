@@ -32,6 +32,9 @@
             if (this.mesh) {
                 this.mesh.position.set(x, y, z);
             }
+            if (this.cssMesh) {
+                this.cssMesh.position.set(x, y, z);
+            }
             this.fire('position-changed', this);
         }
     }
