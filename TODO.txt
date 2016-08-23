@@ -1,3 +1,4 @@
+-skybox edges
 -mousemode
 -flashing
 -cloud
@@ -9,3 +10,4 @@
  -stop bubbling
 -stacking and content
 -reflecting water
+-make camera dynamic
