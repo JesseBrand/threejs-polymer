@@ -81,9 +81,10 @@
         var self;
 
         var controller = {
+            _rendererComponents: [],
             _initScene: function() {
                 // TODO: Camera configurable
-                camera = new THREE.PerspectiveCamera(90, width / height, .1, 2048);
+                camera = new THREE.PerspectiveCamera(80, width / height, .1, 2048);
                 this._createGLRenderer();
             },
             _finalize: function(detail) {
@@ -135,6 +136,9 @@
                 cameraHandler = handler;
                 handler.init({camera: camera, blocker: this.blocker, instructions: this.instructions});
             },
+            registerRendererComponent: function(handler) {
+                this._rendererComponents.push(handler);
+            },
             _start: function(container) {
                 if (this.debug) {
                     scene.add(new THREE.AxisHelper(100));
@@ -166,6 +170,9 @@
                 if (cssCameraView) {
                     cssCameraView.render(cssScene, camera);
                 }
+                for (var i = 0; i < self._rendererComponents.length; i++) {
+                    self._rendererComponents[i](glRenderer, scene, camera);
+                }
             }
         };
         Polymer({
@@ -188,6 +195,9 @@
                 });
                 this.addEventListener('registerCameraHandler', function(event) {
                     controller.registerCameraHandler(event.detail);
+                });
+                this.addEventListener('register-renderer-component', function(event) {
+                    controller.registerRendererComponent(event.detail);
                 });
             },
             ready: function() {
