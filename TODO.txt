@@ -1,13 +1,11 @@
 -skybox edges
 -mousemode
 -flashing
--cloud
+-clouds
 -textures
 -add car
  -add animation
  -add terrain clamping
--add modifiers
- -stop bubbling
 -tweak reflection
 -reflection dynamics
 -make camera dynamic
