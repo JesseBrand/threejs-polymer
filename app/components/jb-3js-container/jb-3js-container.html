@@ -166,12 +166,12 @@
                     cameraHandler.animate();
                 }
 
+                for (var i = 0; i < self._rendererComponents.length; i++) {
+                    self._rendererComponents[i](glRenderer, scene, camera);
+                }
                 glCameraView.render(scene, camera);
                 if (cssCameraView) {
                     cssCameraView.render(cssScene, camera);
-                }
-                for (var i = 0; i < self._rendererComponents.length; i++) {
-                    self._rendererComponents[i](glRenderer, scene, camera);
                 }
             }
         };
