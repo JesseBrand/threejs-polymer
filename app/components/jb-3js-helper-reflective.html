@@ -7,7 +7,7 @@
             if (!this.reflective) {
                 return;
             }
-            this.cubeCamera = new THREE.CubeCamera(0.1, 512, this.width); // TODO: configurable
+            this.cubeCamera = new THREE.CubeCamera(0, 512, this.width); // TODO: configurable
             console.log(this.cubeCamera);
         },
         attached: function() {
@@ -18,7 +18,7 @@
             this.fire('addToScene', this.cubeCamera);
             var self = this;
             this.fire('register-renderer-component', function(renderer, scene, camera) {
-                self.cubeCamera.position.set(camera.position.x, self.y, camera.position.z);
+                self.cubeCamera.position.set(camera.position.x, self.y + self.y - camera.position.y, camera.position.z);
                 self.cubeCamera.updateCubeMap(renderer, scene);
             });
         }
