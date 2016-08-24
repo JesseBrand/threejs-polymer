@@ -15,7 +15,7 @@
         attached: function() {
             var matProps = {color: this.color};
             if (this.textured) {
-                matProps.map = THREE.ImageUtils.loadTexture(this.skyboxTexture);
+                matProps.map = new THREE.TextureLoader().load(this.skyboxTexture);
             }
             var material = new THREE.MeshBasicMaterial(matProps);
             material.side = THREE.BackSide;
