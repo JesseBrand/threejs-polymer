@@ -8,5 +8,7 @@
  -add terrain clamping
 -add modifiers
  -stop bubbling
--reflecting water
+-tweak reflection
+-reflection dynamics
 -make camera dynamic
+-rename events
