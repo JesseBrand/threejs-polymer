@@ -24,11 +24,11 @@ var TerrainShaders = {
         _interpolateAll(results);
         return {
             getColorAt: function(y) {
-                if (!results[Math.floor(y / height * 3.65 * resolution)]) {
+                if (!results[Math.floor(y / height * 3.6 * resolution)]) {
                     console.error('adjust to', height / y, 'or less');
                     debugger;
                 }
-                return results[Math.floor(y / height * 3.65 * resolution)];
+                return results[Math.floor(y / height * 3.6 * resolution)];
             }
         };
         function _interpolateAll(array) {
