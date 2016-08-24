@@ -1,0 +1,26 @@
+<script>
+    var ReflectiveBehavior = {
+        properties: {
+            reflective: Boolean
+        },
+        ready: function() {
+            if (!this.reflective) {
+                return;
+            }
+            this.cubeCamera = new THREE.CubeCamera(0.1, 512, this.width); // TODO: configurable
+            console.log(this.cubeCamera);
+        },
+        attached: function() {
+            if (!this.reflective) {
+                return;
+            }
+            this.cubeCamera.position.set(this.x, this.y, this.z);
+            this.fire('addToScene', this.cubeCamera);
+            var self = this;
+            this.fire('register-renderer-component', function(renderer, scene, camera) {
+                self.cubeCamera.position.set(camera.position.x, self.y, camera.position.z);
+                self.cubeCamera.updateCubeMap(renderer, scene);
+            });
+        }
+    }
+</script>
