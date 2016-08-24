@@ -23,7 +23,7 @@
                 this.mesh.material.envMap = this.cubeCamera.renderTarget.texture;
             }
             this.mesh.position.set(this.x, this.y, this.z);
-            this.fire('addToScene', this.mesh);
+            this.fire('add-to-scene', this.mesh);
         }
     });
 </script>

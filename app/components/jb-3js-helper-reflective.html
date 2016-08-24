@@ -14,7 +14,7 @@
                 return;
             }
             this.cubeCamera.position.set(this.x, this.y, this.z);
-            this.fire('addToScene', this.cubeCamera);
+            this.fire('add-to-scene', this.cubeCamera);
             var self = this;
             this.fire('register-renderer-component', function(renderer, scene, camera) {
                 self.cubeCamera.position.set(camera.position.x, self.y + self.y - camera.position.y, camera.position.z);

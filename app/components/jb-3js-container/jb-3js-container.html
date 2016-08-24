@@ -187,13 +187,13 @@
             },
             created: function() {
                 controller._initScene();
-                this.addEventListener('addToScene', function(event) {
+                this.addEventListener('add-to-scene', function(event) {
                     controller.addToScene(event.detail);
                 });
-                this.addEventListener('addCssToScene', function(event) {
+                this.addEventListener('add-css-to-scene', function(event) {
                     controller.addCssToScene(event.detail);
                 });
-                this.addEventListener('registerCameraHandler', function(event) {
+                this.addEventListener('register-camera-handler', function(event) {
                     controller.registerCameraHandler(event.detail);
                 });
                 this.addEventListener('register-renderer-component', function(event) {

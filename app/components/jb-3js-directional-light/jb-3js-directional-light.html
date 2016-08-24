@@ -35,12 +35,12 @@ Polymer({
 
         light.shadow.mapSize.width = this.mapSize;
         light.shadow.mapSize.height = this.mapSize;
-        this.fire('addToScene', light);
+        this.fire('add-to-scene', light);
 
         if (this.debug) {
             var helper = new THREE.CameraHelper(light.shadow.camera);
 //            console.log(light.shadow.camera, helper);
-            this.fire('addToScene', new THREE.CameraHelper(light.shadow.camera));
+            this.fire('add-to-scene', new THREE.CameraHelper(light.shadow.camera));
         }
     }
 });

@@ -32,7 +32,7 @@ Polymer({
         }
     },
     created: function() {
-        this.addEventListener('addToScene', function(event) {
+        this.addEventListener('add-to-scene', function(event) {
             if (event.detail === this.mesh) {
                 return;
             }
@@ -46,12 +46,12 @@ Polymer({
                 this.mesh.scale.x = this.scaleX;
                 this.mesh.scale.y = this.scaleY;
                 this.mesh.scale.z = this.scaleZ;
-                this.fire('addToScene', this.mesh);
+                this.fire('add-to-scene', this.mesh);
             }
             this.mesh.add(event.detail);
             event.stopPropagation();
         });
-        this.addEventListener('addCssToScene', function(event) {
+        this.addEventListener('add-css-to-scene', function(event) {
             if (event.detail === this.cssMesh) {
                 return;
             }
@@ -65,7 +65,7 @@ Polymer({
                 this.cssMesh.scale.x = this.scaleX;
                 this.cssMesh.scale.y = this.scaleY;
                 this.cssMesh.scale.z = this.scaleZ;
-                this.fire('addCssToScene', this.cssMesh);
+                this.fire('add-css-to-scene', this.cssMesh);
             }
             this.cssMesh.add(event.detail);
             event.stopPropagation();
