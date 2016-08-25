@@ -51,7 +51,9 @@ function ShipKeyHandler(shipController) {
                 shipController.moveDown = false;
                 break;
             case 17: // ctrl
-                shipController.switchCursorMode();
+                if (shipController.switchCursorMode) {
+                    shipController.switchCursorMode();
+                }
                 break;
             case 80: // p
                 shipController.pause = false;

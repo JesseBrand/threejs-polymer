@@ -24,8 +24,8 @@
                     var keyHandler = new ShipKeyHandler(this);
                     document.addEventListener('keydown', keyHandler.keyDown, false);
                     document.addEventListener('keyup', keyHandler.keyUp, false);
-                    var controls = new THREE.MyControls(details.camera);
-                    this.ship = controls.getObject();
+                    this.controls = new THREE.MyControls(details.camera);
+                    this.ship = this.controls.getObject();
                     this.ship.position.set(this.polymerComponent.x, this.polymerComponent.y, this.polymerComponent.z);
                     this.polymerComponent.fire('addToScene', this.ship);
 
@@ -41,7 +41,8 @@
                         }
                     }
 
-                    initPointerLock(controls, details.blocker, details.instructions);
+                    this.pointerLockController = createPointerLockController(this.controls, details.blocker, details.instructions);
+                    this.pointerLockController.init();
                 },
                 animate: function() {
                     var velocity = new THREE.Vector3();
@@ -70,6 +71,14 @@
                     this.ship.translateX(velocity.x);
                     this.ship.translateY(velocity.y);
                     this.ship.translateZ(velocity.z);
+                },
+                switchCursorMode: function() {
+                    shipController.controls.cursorFree = !shipController.controls.cursorFree;
+                    if (shipController.controls.cursorFree) {
+                        shipController.pointerLockController.releaseFocus();
+                    } else {
+                        shipController.pointerLockController.grabFocus();
+                    }
                 },
                 polymerComponent: this
             };
