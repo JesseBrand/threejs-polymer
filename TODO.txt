@@ -1,5 +1,4 @@
 -skybox edges
--mousemode
 -flashing
 -clouds
 -textures
@@ -9,3 +8,4 @@
 -tweak reflection
 -reflection dynamics
 -make camera dynamic
+-smoothen terrain
