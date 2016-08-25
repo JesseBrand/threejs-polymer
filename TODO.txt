@@ -8,4 +8,3 @@
 -tweak reflection
 -reflection dynamics
 -make camera dynamic
--smoothen terrain

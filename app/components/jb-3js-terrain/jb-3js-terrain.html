@@ -12,7 +12,8 @@
             is: 'jb-3js-terrain',
             properties: {
                 scale: 'Number',
-                shaderName: 'String'
+                shaderName: 'String',
+                smoothingPasses: 'Number'
             },
             behaviors: [PositionBehavior, SizeBehavior, ColorBehavior, ShadowBehavior],
             ready: function() {
@@ -27,7 +28,8 @@
                 });
             },
             attached: function() {
-                var data = generateHeight(this.width, this.depth, this.height);
+                var data = generateHeightMap(this.width, this.depth, this.height);
+                data = smoothen(data, this.width, this.depth, this.smoothingPasses);
                 var geometry = new THREE.PlaneBufferGeometry(this.width, this.depth, this.width - 1, this.depth - 1 );
                 geometry.rotateX(-Math.PI / 2);
                 this.vertices = geometry.attributes.position.array;
@@ -81,23 +83,59 @@
             }
         });
 
-        function generateHeight(width, depth, maxHeight) {
+        function generateHeightMap(width, depth, maxHeight) {
             var size = width * depth;
-            var data = new Uint8Array( size );
+            var data = new Uint8Array(size);
             var perlin = new ImprovedNoise();
             var quality = maxHeight;
             var passes = 4;
             var heightFactor = .25;
             var z = Math.random() * 100;
-            for ( var j = 0; j < passes; j ++ ) {
-                for ( var i = 0; i < size; i ++ ) {
+            for (var j = 0; j < passes; j++) {
+                for (var i = 0; i < size; i++) {
                     var x = i % width;
-                    var y = ~~ ( i / width );
-                    data[ i ] += Math.abs(perlin.noise( x / quality, y / quality, z ) * quality * heightFactor);
+                    var y = ~~ (i / width);
+                    data[i] += Math.abs(perlin.noise( x / quality, y / quality, z ) * quality * heightFactor);
                 }
                 quality /= 2;
             }
             return data;
+        }
+
+        function smoothen(data, width, depth, smoothingPasses) {
+            var size = width * depth;
+            var result = data;
+            for (var j = 0; j < smoothingPasses; j++) {
+                var newData = new Float32Array(size);
+                for (var i = 0; i < size; i++) {
+                    var x = i % width;
+                    var y = ~~ (i / width);
+                    var vals = [result[i]];
+                    if (x !== 0) {
+                        vals.push(result[i - 1]);
+                    }
+                    if (x !== width - 1) {
+                        vals.push(result[i + 1]);
+                    }
+                    if (y !== 0) {
+                        vals.push(result[i - width]);
+                    }
+                    if (y !== depth - 1) {
+                        vals.push(result[i + width]);
+                    }
+                    newData[i] = avg(vals);
+                }
+                result = newData;
+            }
+            return result;
+        }
+
+        function avg(arr) {
+            var sum = 0;
+            for (var i = 0; i < arr.length; i++) {
+                sum += arr[i];
+            }
+            return sum / arr.length;
         }
     }());
 </script>
