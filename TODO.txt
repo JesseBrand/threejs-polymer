@@ -1,4 +1,3 @@
--skybox edges
 -flashing
 -clouds
 -textures
