@@ -1,0 +1,90 @@
+<link rel="import" href="../../generic/jb-3js-cube/jb-3js-cube.html" />
+<link rel="import" href="../../generic/jb-3js-cylinder/jb-3js-cylinder.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-clamp/jb-3js-helper-clamp.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-color/jb-3js-helper-color.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-position/jb-3js-helper-position.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-shadow/jb-3js-helper-shadow.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-size/jb-3js-helper-size.html" />
+<dom-module id="jb-3js-pillar">
+    <template>
+        <jb-3js-cube     shadow="{{shadow}}" color="{{color}}" x="{{x}}" y="{{bottomStepY}}" z="{{z}}" width="{{width}}" height="{{stepHeight}}" depth="{{depth}}"></jb-3js-cube>
+        <jb-3js-cylinder shadow="{{shadow}}" color="{{color}}" x="{{x}}" y="{{bottomRingY}}" z="{{z}}" radius="{{ringRadius}}" height="{{stepHeight}}"></jb-3js-cylinder>
+        <jb-3js-cylinder shadow="{{shadow}}" color="{{color}}" x="{{x}}" y="{{y}}"           z="{{z}}" radius="{{centerRadius}}" height="{{centerHeight}}"></jb-3js-cylinder>
+        <jb-3js-cylinder shadow="{{shadow}}" color="{{color}}" x="{{x}}" y="{{topRingY}}"    z="{{z}}" radius="{{ringRadius}}" height="{{stepHeight}}"></jb-3js-cylinder>
+        <jb-3js-cube     shadow="{{shadow}}" color="{{color}}" x="{{x}}" y="{{topStepY}}"    z="{{z}}" width="{{width}}" height="{{stepHeight}}" depth="{{depth}}"></jb-3js-cube>
+        <content></content>
+    </template>
+</dom-module>
+<script>
+    'use strict';
+
+    Polymer({
+        is: 'jb-3js-pillar',
+        behaviors: [PositionBehavior, SizeBehavior, ColorBehavior, ShadowBehavior, ClampBehavior],
+        properties: {
+            halfHeight: {
+                type: 'Number',
+                computed: '_getHalfHeight(height)'
+            },
+            stepHeight: {
+                type: 'Number',
+                computed: '_getStepHeight(height)'
+            },
+            centerHeight: {
+                type: 'Number',
+                computed: '_getCenterHeight(height, stepHeight)'
+            },
+            bottomStepY: {
+                type: 'Number',
+                computed: '_getBottomStepY(y, halfHeight, stepHeight)'
+            },
+            bottomRingY: {
+                type: 'Number',
+                computed: '_getBottomRingY(y, halfHeight, stepHeight)'
+            },
+            topRingY: {
+                type: 'Number',
+                computed: '_getTopRingY(y, halfHeight, stepHeight)'
+            },
+            topStepY: {
+                type: 'Number',
+                computed: '_getTopStepY(y, halfHeight, stepHeight)'
+            },
+            ringRadius: {
+                type: 'Number',
+                computed: '_getRingRadius(width)'
+            },
+            centerRadius: {
+                type: 'Number',
+                computed: '_getCenterRadius(width)'
+            }
+        },
+        _getHalfHeight: function(height) {
+            return height / 2;
+        },
+        _getStepHeight: function(height) {
+            return height / 20;
+        },
+        _getCenterHeight: function(height, stepHeight) {
+            return height - 4 * stepHeight;
+        },
+        _getBottomStepY: function(y, halfHeight, stepHeight) {
+            return y - halfHeight + stepHeight * .5;
+        },
+        _getBottomRingY: function(y, halfHeight, stepHeight) {
+            return y - halfHeight + stepHeight * 1.5;
+        },
+        _getTopRingY: function(y, halfHeight, stepHeight) {
+            return y + halfHeight - stepHeight * 1.5;
+        },
+        _getTopStepY: function(y, halfHeight, stepHeight) {
+            return y + halfHeight - stepHeight * .5;
+        },
+        _getRingRadius: function(width) {
+            return width / 2;
+        },
+        _getCenterRadius: function(width) {
+            return width * .4;
+        }
+    });
+</script>

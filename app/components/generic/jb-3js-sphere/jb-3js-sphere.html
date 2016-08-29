@@ -1,0 +1,31 @@
+<link rel="import" href="../../behaviors/jb-3js-helper-clamp/jb-3js-helper-clamp.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-color/jb-3js-helper-color.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-position/jb-3js-helper-position.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-shadow/jb-3js-helper-shadow.html" />
+<script>
+    'use strict';
+
+    Polymer({
+        is: 'jb-3js-sphere',
+        properties: {
+            radius: {
+                type: 'Number',
+                value: .5
+            }
+        },
+        behaviors: [PositionBehavior, ColorBehavior, ShadowBehavior, ClampBehavior],
+        ready: function() {
+            this.radius = parseFloat(this.radius);
+            this.height = 2 * this.radius;
+        },
+        attached: function() {
+            var material = new THREE.MeshPhongMaterial({color: this.color});
+            var geometry = new THREE.SphereGeometry(this.radius);
+            this.mesh = new THREE.Mesh(geometry, material);
+            this.mesh.position.set(this.x, this.y, this.z);
+            this.mesh.castShadow = this.shadow;
+            this.mesh.receiveShadow = this.shadow;
+            this.fire('add-to-scene', this.mesh);
+        }
+    });
+</script>

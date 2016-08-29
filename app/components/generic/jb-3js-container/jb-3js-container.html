@@ -1,0 +1,213 @@
+<link rel="import" href="../../../../bower_components/polymer/polymer.html" />
+<link rel="import" href="../../../../bower_components/paper-card/paper-card.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-debug/jb-3js-helper-debug.html" />
+<script src="../../../../bower_components/threejs/build/three.js"></script>
+
+<dom-module id="jb-3js-container">
+    <style>
+        :host {
+            width: 100%;
+            height: 100%;
+            display: inline-block;
+            box-sizing: border-box;
+            position: relative;
+        }.blocker, .instructions {
+             width: 100%;
+             height: 100%;
+         }
+        .glRenderer {
+            z-index: 1;
+            pointer-events: none;
+        }
+        .cssRenderer {
+            z-index: 2;
+        }
+        .blocker {
+            z-index: 3;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .instructions {
+            display: -webkit-box;
+            display: -moz-box;
+            display: box;
+            -webkit-box-orient: horizontal;
+            -moz-box-orient: horizontal;
+            box-orient: horizontal;
+            -webkit-box-pack: center;
+            -moz-box-pack: center;
+            box-pack: center;
+            -webkit-box-align: center;
+            -moz-box-align: center;
+            box-align: center;
+            text-align: center;
+            cursor: pointer;
+            font-size: 40;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        .glRenderer, .cssRenderer, .blocker {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+    <template>
+        <paper-card>
+            <div class="card-content">
+                <content></content>
+            </div>
+        </paper-card>
+        <div class="blocker">
+            <div class="instructions">Click here</div>
+        </div>
+    </template>
+</dom-module>
+
+<script src="css-3d-renderer.js"></script>
+<script>
+    (function() {
+        var width = window.innerWidth; // TODO: dynamically
+        var height = window.innerHeight;
+
+        var scene;
+        var cssScene;
+
+        var glRenderer;
+        var glCameraView;
+        var cssRenderer;
+        var cssCameraView;
+
+        var cameraHandler;
+        var self;
+
+        var controller = {
+            _rendererComponents: [],
+            _initScene: function() {
+                // TODO: Camera configurable
+                camera = new THREE.PerspectiveCamera(80, width / height, .1, 2048);
+                this._createGLRenderer();
+            },
+            _finalize: function(detail) {
+                // finalize with attribute data
+                this.debug = detail.debug;
+                if (typeof detail.cssRenderer !== 'undefined') {
+                    this._createCssRenderer();
+                }
+                if (typeof detail.clearColor !== 'undefined') {
+                    glRenderer.setClearColor(detail.clearColor, 1);
+                }
+            },
+            _createGLRenderer: function() {
+                scene = new THREE.Scene();
+
+                glRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
+                glRenderer.setSize(width, height);
+                glRenderer.domElement.className = 'glRenderer style-scope jb-3js-container';
+
+                glRenderer.shadowMap.enabled = true;
+                glRenderer.shadowMap.type = THREE.PCFShadowMap;
+                glRenderer.shadowMap.soft = true;
+                glRenderer.gammaOutput = true;
+
+                glCameraView = glRenderer;
+            },
+            _createCssRenderer: function() {
+                cssScene = new THREE.Scene();
+
+                cssRenderer = new THREE.CSS3DRenderer();
+                cssRenderer.setSize(width, height);
+                cssRenderer.domElement.className = 'cssRenderer style-scope jb-3js-container';
+
+                cssCameraView = cssRenderer;
+            },
+            addToScene: function(mesh) {
+                scene.add(mesh);
+                if (this.debug) {
+                    console.log('added mesh', mesh);
+                }
+            },
+            addCssToScene: function(mesh) {
+                cssScene.add(mesh);
+                if (this.debug) {
+                    console.log('added css', mesh);
+                }
+            },
+            registerCameraHandler: function(handler) {
+                cameraHandler = handler;
+                handler.init({camera: camera, blocker: this.blocker, instructions: this.instructions});
+            },
+            registerRendererComponent: function(handler) {
+                this._rendererComponents.push(handler);
+            },
+            _start: function(container) {
+                if (this.debug) {
+                    scene.add(new THREE.AxisHelper(100));
+                }
+                this.content = container.querySelector('.card-content');
+                this.content.style.width = width + 'px';
+                this.content.style.height = height + 'px';
+                this.blocker = container.querySelector('.blocker');
+                this.instructions = container.querySelector('.instructions');
+
+                var card = container.querySelector('.card-content');
+                if (cssRenderer) {
+                    cssRenderer.domElement.appendChild(glRenderer.domElement);
+                    card.appendChild(cssRenderer.domElement);
+                } else {
+                    card.appendChild(glRenderer.domElement);
+                }
+                self = this;
+                self._render();
+            },
+            _render: function() {
+                requestAnimationFrame(self._render);
+
+                if (cameraHandler) {
+                    cameraHandler.animate();
+                }
+
+                for (var i = 0; i < self._rendererComponents.length; i++) {
+                    self._rendererComponents[i](glRenderer, scene, camera);
+                }
+                glCameraView.render(scene, camera);
+                if (cssCameraView) {
+                    cssCameraView.render(cssScene, camera);
+                }
+            }
+        };
+        Polymer({
+            is: 'jb-3js-container',
+            behaviors: [DebugBehavior],
+            properties: {
+                clearColor: {
+                    type: Number,
+                    value: 0x000000
+                },
+                cssRenderer: Boolean
+            },
+            created: function() {
+                controller._initScene();
+                this.addEventListener('add-to-scene', function(event) {
+                    controller.addToScene(event.detail);
+                });
+                this.addEventListener('add-css-to-scene', function(event) {
+                    controller.addCssToScene(event.detail);
+                });
+                this.addEventListener('register-camera-handler', function(event) {
+                    controller.registerCameraHandler(event.detail);
+                });
+                this.addEventListener('register-renderer-component', function(event) {
+                    controller.registerRendererComponent(event.detail);
+                });
+            },
+            ready: function() {
+                controller._finalize({clearColor: this.clearColor, cssRenderer: this.cssRenderer, debug: this.debug});
+            },
+            attached: function() {
+                var container = Polymer.dom(this.root);
+                controller._start(container);
+            }
+        });
+
+    })();
+</script>
