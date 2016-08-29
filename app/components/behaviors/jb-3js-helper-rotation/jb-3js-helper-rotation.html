@@ -1,0 +1,33 @@
+<script>
+var RotationBehavior = {
+    properties: {
+        rotationX: {
+            type: 'Number',
+            value: 0
+        },
+        rotationY: {
+            type: 'Number',
+            value: 0
+        },
+        rotationZ: {
+            type: 'Number',
+            value: 0
+        }
+    },
+    attached: function() {
+        if (this.mesh) {
+            this.mesh.rotation.x = toRad(this.rotationX);
+            this.mesh.rotation.y = toRad(this.rotationY);
+            this.mesh.rotation.z = toRad(this.rotationZ);
+        }
+        if (this.cssMesh) {
+            this.cssMesh.rotation.x = toRad(this.rotationX);
+            this.cssMesh.rotation.y = toRad(this.rotationY);
+            this.cssMesh.rotation.z = toRad(this.rotationZ);
+        }
+    }
+};
+function toRad(degrees) {
+    return degrees * Math.PI / 180;
+}
+</script>

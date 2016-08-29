@@ -1,36 +1,12 @@
+<link rel="import" href="../../behaviors/jb-3js-helper-rotation/jb-3js-helper-rotation.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-scale/jb-3js-helper-scale.html" />
 <script>
 'use strict';
 
 (function() {
 Polymer({
     is: 'jb-3js-transformation',
-    behaviors: [PositionBehavior],
-    properties: {
-        rotationX: {
-            type: Number,
-            value: 0
-        },
-        rotationY: {
-            type: Number,
-            value: 0
-        },
-        rotationZ: {
-            type: Number,
-            value: 0
-        },
-        scaleX: {
-            type: Number,
-            value: 1
-        },
-        scaleY: {
-            type: Number,
-            value: 1
-        },
-        scaleZ: {
-            type: Number,
-            value: 1
-        }
-    },
+    behaviors: [PositionBehavior, RotationBehavior, ScaleBehavior],
     created: function() {
         this.addEventListener('add-to-scene', function(event) {
             if (event.detail === this.mesh) {

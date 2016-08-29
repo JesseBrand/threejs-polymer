@@ -1,0 +1,30 @@
+<script>
+var ScaleBehavior = {
+    properties: {
+        scaleX: {
+            type: 'Number',
+            value: 1
+        },
+        scaleY: {
+            type: 'Number',
+            value: 1
+        },
+        scaleZ: {
+            type: 'Number',
+            value: 1
+        }
+    },
+    attached: function() {
+        if (this.mesh) {
+            this.mesh.scale.x = this.scaleX;
+            this.mesh.scale.y = this.scaleY;
+            this.mesh.scale.z = this.scaleZ;
+        }
+        if (this.cssMesh) {
+            this.cssMesh.scale.x = this.scaleX;
+            this.cssMesh.scale.y = this.scaleY;
+            this.cssMesh.scale.z = this.scaleZ;
+        }
+    }
+};
+</script>
