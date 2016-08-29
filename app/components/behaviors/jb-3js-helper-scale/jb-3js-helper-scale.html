@@ -1,18 +1,38 @@
 <script>
 var ScaleBehavior = {
     properties: {
+        scale: {
+            type: 'Number',
+            value: 1,
+            notify: true
+        },
         scaleX: {
             type: 'Number',
-            value: 1
+            notify: true
         },
         scaleY: {
             type: 'Number',
-            value: 1
+            notify: true
         },
         scaleZ: {
             type: 'Number',
-            value: 1
+            notify: true
         }
+    },
+    observers: [
+        'globalScaleChanged(scale)'
+    ],
+    ready: function() {
+        this.applyScale();
+    },
+    globalScaleChanged(scale) {
+        this.applyScale();
+    },
+    applyScale: function() {
+        this.scale = parseInt(this.scale);
+        this.scaleX = this.scaleX ? parseInt(this.scaleX) : this.scale;
+        this.scaleY = this.scaleY ? parseInt(this.scaleY) : this.scale;
+        this.scaleZ = this.scaleZ ? parseInt(this.scaleZ) : this.scale;
     },
     attached: function() {
         if (this.mesh) {
