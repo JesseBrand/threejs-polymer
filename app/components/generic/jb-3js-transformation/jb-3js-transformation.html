@@ -14,7 +14,7 @@ Polymer({
             }
             if (!this.mesh) {
                 this.mesh = new THREE.Object3D();
-                this.mesh.name = 'RotationModifier';
+                this.mesh.name = 'Transformation';
                 this.mesh.position.set(this.x, this.y, this.z);
                 this.mesh.rotation.x = toRad(this.rotationX);
                 this.mesh.rotation.y = toRad(this.rotationY);
@@ -33,7 +33,7 @@ Polymer({
             }
             if (!this.cssMesh) {
                 this.cssMesh = new THREE.Object3D();
-                this.cssMesh.name = 'RotationModifier';
+                this.cssMesh.name = 'Transformation';
                 this.cssMesh.position.set(this.x, this.y, this.z);
                 this.cssMesh.rotation.x = toRad(this.rotationX);
                 this.cssMesh.rotation.y = toRad(this.rotationY);
