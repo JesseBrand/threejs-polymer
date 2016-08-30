@@ -1,6 +1,5 @@
 -flashing
 -clouds
--textures
 -add car
  -add animation
  -add terrain clamping
