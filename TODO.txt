@@ -7,3 +7,4 @@
 -tweak reflection
 -reflection dynamics
 -make camera dynamic
+-implement behavior more on behavior itself where possible
