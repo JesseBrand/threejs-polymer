@@ -1,5 +1,6 @@
 <link rel="import" href="../../behaviors/jb-3js-helper-clamp/jb-3js-helper-clamp.html" />
 <link rel="import" href="../../behaviors/jb-3js-helper-color/jb-3js-helper-color.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-cube-texture/jb-3js-helper-cube-texture.html" />
 <link rel="import" href="../../behaviors/jb-3js-helper-opacity/jb-3js-helper-opacity.html" />
 <link rel="import" href="../../behaviors/jb-3js-helper-position/jb-3js-helper-position.html" />
 <link rel="import" href="../../behaviors/jb-3js-helper-shadow/jb-3js-helper-shadow.html" />
@@ -9,11 +10,19 @@
 
     Polymer({
         is: 'jb-3js-cube',
-        behaviors: [PositionBehavior, SizeBehavior, ColorBehavior, ShadowBehavior, OpacityBehavior, ClampBehavior],
+        behaviors: [PositionBehavior, SizeBehavior, ColorBehavior, ShadowBehavior, OpacityBehavior, ClampBehavior, CubeTextureBehavior],
         attached: function() {
-            var material = new THREE.MeshPhongMaterial({color: this.color, opacity: this.opacity, transparent: this.transparent});
+            var textureMaterials = this.createTextureMaterials();
+            var defaultMaterial = new THREE.MeshPhongMaterial({color: this.color, opacity: this.opacity, transparent: this.transparent});
             var geometry = new THREE.CubeGeometry(this.width, this.height, this.depth);
-            this.mesh = new THREE.Mesh(geometry, material);
+            this.mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial([ // TODO: Order may not be correct
+                this.leftTexture ? textureMaterials[this.leftTexture] : defaultMaterial,
+                this.rightTexture ? textureMaterials[this.rightTexture] : defaultMaterial,
+                this.topTexture ? textureMaterials[this.topTexture] : defaultMaterial,
+                this.bottomTexture ? textureMaterials[this.bottomTexture] : defaultMaterial,
+                this.frontTexture ? textureMaterials[this.frontTexture] : defaultMaterial,
+                this.backTexture ? textureMaterials[this.backTexture] : defaultMaterial
+            ]));
             this.mesh.name = 'Cube';
             this.mesh.position.set(this.x, this.y, this.z);
             this.mesh.castShadow = this.shadow;

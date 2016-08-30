@@ -1,0 +1,61 @@
+<script>
+    var CubeTextureBehavior = {
+        properties: {
+            texture: String,
+            topTexture: String,
+            bottomTexture: String,
+            frontTexture: String,
+            backTexture: String,
+            leftTexture: String,
+            rightTexture: String
+        },
+        ready: function() {
+            if (!this.topTexture) {
+                this.topTexture = this.texture;
+            }
+            if (!this.bottomTexture) {
+                this.bottomTexture = this.texture;
+            }
+            if (!this.frontTexture) {
+                this.frontTexture = this.texture;
+            }
+            if (!this.backTexture) {
+                this.backTexture = this.texture;
+            }
+            if (!this.leftTexture) {
+                this.leftTexture = this.texture;
+            }
+            if (!this.rightTexture) {
+                this.rightTexture = this.texture;
+            }
+        },
+        createTextureMaterials: function() {
+            var result = {};
+            var loader = new THREE.TextureLoader();
+            if (this.topTexture) {
+                result[this.topTexture] = loader.load(this.topTexture);
+            }
+            if (this.bottomTexture && !result[this.bottomTexture]) {
+                result[this.bottomTexture] = loader.load(this.bottomTexture);
+            }
+            if (this.frontTexture && !result[this.frontTexture]) {
+                result[this.frontTexture] = loader.load(this.frontTexture);
+            }
+            if (this.backTexture && !result[this.backTexture]) {
+                result[this.backTexture] = loader.load(this.backTexture);
+            }
+            if (this.leftTexture && !result[this.leftTexture]) {
+                result[this.leftTexture] = loader.load(this.leftTexture);
+            }
+            if (this.rightTexture && !result[this.rightTexture]) {
+                result[this.rightTexture] = loader.load(this.rightTexture);
+            }
+            for (var key in result) {
+                // TODO: option exists to add existing color to texture
+                result[key] = new THREE.MeshPhongMaterial({map: result[key]});
+            }
+            console.log(result);
+            return result;
+        }
+    }
+</script>
