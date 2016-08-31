@@ -31,16 +31,12 @@
           assert.equal(element.color, '0xff0000');
         });
 
-        test('ready function defined', function() {
-          assert.isDefined(element.ready, 'no ready function');
-        });
-
-        test('ready function fires an addToScene event', function(done) {
-          element.addEventListener('addToScene', function(event) {
+        test('attached function fires an add-to-scene event', function(done) {
+          element.addEventListener('add-to-scene', function(event) {
             assert.equal(event.detail.type, 'DirectionalLight');
             done();
           });
-          element.ready();
+          element.attached();
         });
       });
     </script>
