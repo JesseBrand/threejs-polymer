@@ -3,16 +3,17 @@
   "version": "0.0.1",
   "description": "An example polymer project with standardized project structure.",
   "author": "Jesse Brand",
-  "main": "demo/index.html",
   "directories": {
     "serve": ".",
     "test": "test"
   },
   "dependencies": {},
   "devDependencies": {
+    "bower": "^1.7.9",
     "express": "~4.12.4",
     "polymer-serve": "^0.0.38",
-    "web-component-tester": "^4.3.1"
+    "web-component-tester": "^4.3.1",
+    "web-component-tester-istanbul": "^0.10.0"
   },
   "scripts": {
     "serve": "polymer serve",
