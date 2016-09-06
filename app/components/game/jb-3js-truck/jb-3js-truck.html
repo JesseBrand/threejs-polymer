@@ -1,3 +1,4 @@
+<link rel="import" href="../../../../bower_components/polymer/polymer.html" />
 <link rel="import" href="../../behaviors/jb-3js-helper-clamp/jb-3js-helper-clamp.html" />
 <link rel="import" href="../../behaviors/jb-3js-helper-color/jb-3js-helper-color.html" />
 <link rel="import" href="../../behaviors/jb-3js-helper-position/jb-3js-helper-position.html" />
@@ -6,10 +7,15 @@
 <link rel="import" href="../../behaviors/jb-3js-helper-shadow/jb-3js-helper-shadow.html" />
 <link rel="import" href="../../behaviors/jb-3js-helper-size/jb-3js-helper-size.html" />
 <link rel="import" href="../../generic/jb-3js-cube/jb-3js-cube.html" />
+<link rel="import" href="../../generic/jb-3js-transformation/jb-3js-transformation.html" />
 <dom-module id="jb-3js-truck">
     <template>
         <jb-3js-transformation x="{{x}}" y="{{y}}" z="{{z}}" rotation-x="{{rotationX}}" rotation-y="{{rotationY}}" rotation-z="{{rotationZ}}" scale-x="{{scaleX}}" scale-y="{{scaleY}}" scale-z="{{scaleZ}}">
-            <jb-3js-cube shadow color="0xffffff" y="2.5" z="3.5" width="3" height="3" depth="5" left-texture="app/components/game/jb-3js-truck/bus.jpg" right-texture="app/components/game/jb-3js-truck/bus.jpg"></jb-3js-cube>
+            <jb-3js-cube shadow color="0xffffff" y="2.5" z="-1" width="3" height="3" depth="5" left-texture="app/components/game/jb-3js-truck/bus.jpg" right-texture="app/components/game/jb-3js-truck/bus.jpg">
+                <content></content>
+            </jb-3js-cube>
+            <jb-3js-cube shadow color="{{color}}" size="2" y="2" z="2.5"></jb-3js-cube>
+            <jb-3js-cube shadow color="{{color}}" width="2" height=".5" depth="7" y=".75"></jb-3js-cube>
         </jb-3js-transformation>
     </template>
 </dom-module>
