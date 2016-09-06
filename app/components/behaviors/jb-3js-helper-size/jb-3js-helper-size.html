@@ -19,10 +19,10 @@
             }
         },
         ready: function() {
-            var size = parseInt(this.size);
-            this.width = parseInt(this.width) || size;
-            this.height = parseInt(this.height) || size;
-            this.depth = parseInt(this.depth) || size;
+            var size = parseFloat(this.size);
+            this.width = parseFloat(this.width) || size;
+            this.height = parseFloat(this.height) || size;
+            this.depth = parseFloat(this.depth) || size;
         },
         getSize: function() {
             return {width: this.width, height: this.height, depth: this.depth};

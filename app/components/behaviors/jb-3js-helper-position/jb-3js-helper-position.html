@@ -21,13 +21,21 @@
             'positionChanged(x, y, z)'
         ],
         ready: function() {
-            this.x = parseInt(this.x);
-            this.y = parseInt(this.y);
-            this.z = parseInt(this.z);
+            this.x = parseFloat(this.x);
+            this.y = parseFloat(this.y);
+            this.z = parseFloat(this.z);
         },
 //        getPosition: function() {
 //            return {x: this.x, y: this.y, z: this.z};
 //        },
+        attached: function() {
+            if (this.mesh) {
+                this.mesh.position.set(this.x, this.y, this.z);
+            }
+            if (this.cssMesh) {
+                this.cssMesh.position.set(this.x, this.y, this.z);
+            }
+        },
         positionChanged: function(x, y, z) {
             if (this.mesh) {
                 this.mesh.position.set(x, y, z);
