@@ -8,6 +8,7 @@
 <link rel="import" href="../../behaviors/jb-3js-helper-size/jb-3js-helper-size.html" />
 <link rel="import" href="../../generic/jb-3js-cube/jb-3js-cube.html" />
 <link rel="import" href="../../generic/jb-3js-transformation/jb-3js-transformation.html" />
+<link rel="import" href="../jb-3js-wheel/jb-3js-wheel.html" />
 <dom-module id="jb-3js-truck">
     <template>
         <jb-3js-transformation x="{{x}}" y="{{y}}" z="{{z}}" rotation-x="{{rotationX}}" rotation-y="{{rotationY}}" rotation-z="{{rotationZ}}" scale-x="{{scaleX}}" scale-y="{{scaleY}}" scale-z="{{scaleZ}}">
@@ -16,6 +17,12 @@
             </jb-3js-cube>
             <jb-3js-cube shadow color="{{color}}" size="2" y="2" z="2.5"></jb-3js-cube>
             <jb-3js-cube shadow color="{{color}}" width="2" height=".5" depth="7" y=".75"></jb-3js-cube>
+            <jb-3js-wheel shadow color="0x555555" height=".5" radius=".5" radiusSegments="16" x="1.25" y=".5" z="2.5"></jb-3js-wheel>
+            <jb-3js-wheel shadow color="0x555555" height=".5" radius=".5" radiusSegments="16" x="1.25" y=".5" z="1"></jb-3js-wheel>
+            <jb-3js-wheel shadow color="0x555555" height=".5" radius=".5" radiusSegments="16" x="1.25" y=".5" z="-2.5"></jb-3js-wheel>
+            <jb-3js-wheel shadow color="0x555555" height=".5" radius=".5" radiusSegments="16" x="-1.25" y=".5" z="2.5"></jb-3js-wheel>
+            <jb-3js-wheel shadow color="0x555555" height=".5" radius=".5" radiusSegments="16" x="-1.25" y=".5" z="1"></jb-3js-wheel>
+            <jb-3js-wheel shadow color="0x555555" height=".5" radius=".5" radiusSegments="16" x="-1.25" y=".5" z="-2.5"></jb-3js-wheel>
         </jb-3js-transformation>
     </template>
 </dom-module>
