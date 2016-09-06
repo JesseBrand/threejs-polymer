@@ -19,12 +19,16 @@
             radius: {
                 type: 'Number',
                 value: .5
+            },
+            radiusSegments: {
+                type: 'Number',
+                value: 8
             }
         },
         behaviors: [PositionBehavior, ColorBehavior, ShadowBehavior, OpacityBehavior],
         attached: function() {
             var material = new THREE.MeshPhongMaterial({color: this.color, opacity: this.opacity, transparent: this.transparent});
-            var geometry = new THREE.CylinderGeometry(this.radius, this.radius, this.height);
+            var geometry = new THREE.CylinderGeometry(this.radius, this.radius, this.height, this.radiusSegments);
             this.mesh = new THREE.Mesh(geometry, material);
             this.mesh.position.set(this.x, this.y, this.z);
             this.mesh.castShadow = this.shadow;
