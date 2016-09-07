@@ -23,28 +23,33 @@ Polymer({
         }
     },
     behaviors: [PositionBehavior, TargetPositionBehavior, ColorBehavior, DebugBehavior, ShadowBehavior],
-    attached: function() {
-        var light = new THREE.DirectionalLight(this.color);
-        light.position.set(this.x, this.y, this.z);
-        light.target.position.set(this.targetX, this.targetY, this.targetZ);
-        light.castShadow = this.shadow;
+    created: function() {
+        this.mesh = new THREE.DirectionalLight();
+        this.mesh.name = 'Directional Light';
+    },
+    ready: function() {
         this.cameraReach = parseInt(this.cameraReach);
-        light.shadow.camera.position.set(this.x, this.y, this.z);
-        light.shadow.camera.near = -this.cameraReach;
-        light.shadow.camera.far = this.cameraReach;
-        light.shadow.camera.left = -this.cameraReach;
-        light.shadow.camera.right = this.cameraReach;
-        light.shadow.camera.top = this.cameraReach;
-        light.shadow.camera.bottom = -this.cameraReach;
+    },
+    attached: function() {
+        this.mesh.color = new THREE.Color(this.color);
+        this.mesh.target.position.set(this.targetX, this.targetY, this.targetZ);
+        this.mesh.castShadow = this.shadow;
+        this.mesh.shadow.camera.position.set(this.x, this.y, this.z);
+        this.mesh.shadow.camera.near = -this.cameraReach;
+        this.mesh.shadow.camera.far = this.cameraReach;
+        this.mesh.shadow.camera.left = -this.cameraReach;
+        this.mesh.shadow.camera.right = this.cameraReach;
+        this.mesh.shadow.camera.top = this.cameraReach;
+        this.mesh.shadow.camera.bottom = -this.cameraReach;
 
-        light.shadow.mapSize.width = this.mapSize;
-        light.shadow.mapSize.height = this.mapSize;
-        this.fire('add-to-scene', light);
+        this.mesh.shadow.mapSize.width = this.mapSize;
+        this.mesh.shadow.mapSize.height = this.mapSize;
+        this.fire('add-to-scene', this.mesh);
 
         if (this.debug) {
-            var helper = new THREE.CameraHelper(light.shadow.camera);
-//            console.log(light.shadow.camera, helper);
-            this.fire('add-to-scene', new THREE.CameraHelper(light.shadow.camera));
+            var helper = new THREE.CameraHelper(this.mesh.shadow.camera);
+//            console.log(this.mesh.shadow.camera, helper);
+            this.fire('add-to-scene', new THREE.CameraHelper(this.mesh.shadow.camera));
         }
     }
 });

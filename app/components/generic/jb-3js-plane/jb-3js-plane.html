@@ -8,16 +8,20 @@
 <dom-module id="jb-3js-plane">
     <template><content></content></template>
 </dom-module>
+
 <script>
     'use strict';
 
     Polymer({
         is: 'jb-3js-plane',
         behaviors: [PositionBehavior, SizeBehavior, ColorBehavior, ShadowBehavior, OpacityBehavior, ReflectiveBehavior],
+        created: function() {
+            this.mesh = new THREE.Mesh();
+            this.mesh.name = 'Plane';
+        },
         attached: function() {
-            var material = new THREE.MeshPhongMaterial({color: this.color, opacity: this.opacity, transparent: this.transparent});
-            var geometry = new THREE.PlaneGeometry(this.width, this.depth);
-            this.mesh = new THREE.Mesh(geometry, material);
+            this.mesh.material = new THREE.MeshPhongMaterial({color: this.color, opacity: this.opacity, transparent: this.transparent});
+            this.mesh.geometry = new THREE.PlaneGeometry(this.width, this.depth);
             this.mesh.name = 'Plane';
             this.mesh.rotation.x = Math.PI * 1.5;
             this.mesh.castShadow = this.shadow;
@@ -26,7 +30,6 @@
             if (this.cubeCamera) {
                 this.mesh.material.envMap = this.cubeCamera.renderTarget.texture;
             }
-            this.mesh.position.set(this.x, this.y, this.z);
             this.fire('add-to-scene', this.mesh);
         }
     });

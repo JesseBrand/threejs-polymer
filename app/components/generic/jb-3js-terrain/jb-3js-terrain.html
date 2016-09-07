@@ -20,6 +20,10 @@
                 smoothingPasses: 'Number'
             },
             behaviors: [PositionBehavior, SizeBehavior, ColorBehavior, ShadowBehavior],
+            created: function() {
+                this.mesh = new THREE.Mesh();
+                this.mesh.name = 'Terrain';
+            },
             ready: function() {
                 if (this.shaderName === 'terra') {
                     this.shader = TerrainShaders.createTerraShader(this.height);
@@ -59,13 +63,14 @@
                 }
                 geometry.addAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-
                 geometry.computeFaceNormals();
                 geometry.computeVertexNormals();
 
-                this.mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({vertexColors: THREE.VertexColors}));
+                this.mesh.geometry = geometry;
+
+                this.mesh.material = new THREE.MeshPhongMaterial({vertexColors: THREE.VertexColors});
+
                 this.mesh.name = 'Terrain';
-                this.mesh.position.set(this.x, this.y, this.z);
                 this.mesh.castShadow = this.shadow;
                 this.mesh.receiveShadow = this.shadow;
 

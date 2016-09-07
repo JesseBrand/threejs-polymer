@@ -15,13 +15,19 @@
             textured: Boolean,
             skyboxTexture: String
         },
+        created: function() {
+            this.mesh = new THREE.Mesh();
+            this.mesh.name = 'Skybox';
+        },
         attached: function() {
             var matProps = {color: this.color};
             if (this.textured) {
                 matProps.map = new THREE.TextureLoader().load(this.skyboxTexture);
             }
-            var material = new THREE.MeshBasicMaterial(matProps);
-            material.side = THREE.BackSide;
+
+            this.mesh.material = new THREE.MeshBasicMaterial(matProps);
+            this.mesh.material.side = THREE.BackSide;
+
             var geometry = new THREE.CubeGeometry(this.width, this.height, this.depth);
             if (this.textured) {
                 var width = 4;
@@ -51,9 +57,8 @@
                 geometry.faceVertexUvs[0][6] =  [uvs[5][1], uvs[5][2], uvs[5][0]]; // bottom
                 geometry.faceVertexUvs[0][7] =  [uvs[5][2], uvs[5][3], uvs[5][0]];
             }
-            var mesh = new THREE.Mesh(geometry, material);
-            mesh.position.set(this.x, this.y, this.z);
-            this.fire('add-to-scene', mesh);
+            this.mesh.geometry = geometry;
+            this.fire('add-to-scene', this.mesh);
         }
     });
 </script>

@@ -18,15 +18,17 @@
             }
         },
         behaviors: [PositionBehavior, ColorBehavior, ShadowBehavior, ClampBehavior],
+        created: function() {
+            this.mesh = new THREE.Mesh();
+            this.mesh.name = 'Sphere';
+        },
         ready: function() {
             this.radius = parseFloat(this.radius);
             this.height = 2 * this.radius;
         },
         attached: function() {
-            var material = new THREE.MeshPhongMaterial({color: this.color});
-            var geometry = new THREE.SphereGeometry(this.radius);
-            this.mesh = new THREE.Mesh(geometry, material);
-            this.mesh.position.set(this.x, this.y, this.z);
+            this.mesh.material = new THREE.MeshPhongMaterial({color: this.color});
+            this.mesh.geometry = new THREE.SphereGeometry(this.radius);
             this.mesh.castShadow = this.shadow;
             this.mesh.receiveShadow = this.shadow;
             this.fire('add-to-scene', this.mesh);

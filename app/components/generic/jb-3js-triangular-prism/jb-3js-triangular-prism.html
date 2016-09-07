@@ -15,8 +15,12 @@
     Polymer({
         is: 'jb-3js-triangular-prism',
         behaviors: [PositionBehavior, SizeBehavior, ColorBehavior, ShadowBehavior, OpacityBehavior, ClampBehavior, GeometryConstructorBehavior],
+        created: function() {
+            this.mesh = new THREE.Mesh();
+            this.mesh.name = 'Triangular Prism';
+        },
         attached: function() {
-            var material = new THREE.MeshPhongMaterial({color: this.color, opacity: this.opacity, transparent: this.transparent});
+            this.mesh.material = new THREE.MeshPhongMaterial({color: this.color, opacity: this.opacity, transparent: this.transparent});
 
             var width = this.width;
             var height = this.height;
@@ -45,8 +49,7 @@
 
             geometry.computeFaceNormals();
 
-            this.mesh = new THREE.Mesh(geometry, material);
-            this.mesh.position.set(this.x, this.y, this.z);
+            this.mesh.geometry = geometry;
             this.mesh.castShadow = this.shadow;
             this.mesh.receiveShadow = this.shadow;
             this.fire('add-to-scene', this.mesh);

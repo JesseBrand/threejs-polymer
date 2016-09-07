@@ -33,9 +33,7 @@
             element.height = siteHeight;
             element.style = 'width:"' + siteWidth + 'px"; height:"' + siteHeight + 'px"';
             this.cssMesh = new THREE.CSS3DObject(element);
-            this.cssMesh.position.x = this.x;
-            this.cssMesh.position.y = this.y;
-            this.cssMesh.position.z = this.z;
+            this.cssMesh.position.set(this.x, this.y, this.z);
             this.cssMesh.scale.x /= this.siteScaleFactor;
             this.cssMesh.scale.y /= this.siteScaleFactor;
             this.cssMesh.scale.z /= this.siteScaleFactor;
