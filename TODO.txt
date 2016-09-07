@@ -6,7 +6,7 @@
 -tweak reflection
 -reflection dynamics
 -make camera dynamic
--implement behavior more on behavior itself where possible
+-implement material behaviors on behaviors themselves
 -specific useful implementation
 -package structure
 -texture cylinders
