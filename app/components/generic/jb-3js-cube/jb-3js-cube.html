@@ -31,8 +31,6 @@
                 this.frontTexture ? textureMaterials[this.frontTexture] : defaultMaterial,
                 this.backTexture ? textureMaterials[this.backTexture] : defaultMaterial
             ]);
-            this.mesh.castShadow = this.shadow;
-            this.mesh.receiveShadow = this.shadow;
             this.fire('add-to-scene', this.mesh);
         }
     });

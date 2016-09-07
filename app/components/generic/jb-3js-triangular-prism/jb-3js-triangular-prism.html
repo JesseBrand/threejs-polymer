@@ -26,8 +26,8 @@
             var height = this.height;
             var depth = this.depth;
 
-            var geometry = new THREE.Geometry();
-            var c = this.createGeometryConstructor(geometry);
+            this.mesh.geometry = new THREE.Geometry();
+            var c = this.createGeometryConstructor(this.mesh.geometry);
             c.vertex(-width / 2, -height / 2, depth / 2);
             c.vertex(0, height / 2, depth / 2);
             c.vertex(width / 2, -height / 2, depth / 2);
@@ -47,11 +47,8 @@
             c.face(0, 1, 4); // left
             c.face(5, 0, 4);
 
-            geometry.computeFaceNormals();
+            this.mesh.geometry.computeFaceNormals();
 
-            this.mesh.geometry = geometry;
-            this.mesh.castShadow = this.shadow;
-            this.mesh.receiveShadow = this.shadow;
             this.fire('add-to-scene', this.mesh);
         }
     });

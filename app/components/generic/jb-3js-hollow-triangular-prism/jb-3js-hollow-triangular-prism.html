@@ -77,8 +77,6 @@
 
             this.mesh.geometry.computeFaceNormals();
 
-            this.mesh.castShadow = this.shadow;
-            this.mesh.receiveShadow = this.shadow;
             this.fire('add-to-scene', this.mesh);
         }
     });

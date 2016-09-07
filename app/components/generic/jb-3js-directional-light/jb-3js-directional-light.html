@@ -33,7 +33,6 @@ Polymer({
     attached: function() {
         this.mesh.color = new THREE.Color(this.color);
         this.mesh.target.position.set(this.targetX, this.targetY, this.targetZ);
-        this.mesh.castShadow = this.shadow;
         this.mesh.shadow.camera.position.set(this.x, this.y, this.z);
         this.mesh.shadow.camera.near = -this.cameraReach;
         this.mesh.shadow.camera.far = this.cameraReach;

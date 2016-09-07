@@ -5,6 +5,12 @@
         },
         ready: function() {
             this.shadow = (typeof this.shadow) !== 'undefined'
+        },
+        attached: function() {
+            if (this.mesh) {
+                this.mesh.castShadow = this.shadow;
+                this.mesh.receiveShadow = this.shadow;
+            }
         }
     }
 </script>
