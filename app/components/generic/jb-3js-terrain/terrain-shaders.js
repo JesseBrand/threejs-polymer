@@ -24,7 +24,7 @@ var TerrainShaders = {
         _interpolateAll(results);
         return {
             getColorAt: function(y) {
-                if (!results[Math.floor(y / height * 3.6 * resolution)]) {
+                if (!results[Math.floor(y / height * 3.55 * resolution)]) {
                     console.error('adjust to', height / y, 'or less');
                     debugger;
                 }
