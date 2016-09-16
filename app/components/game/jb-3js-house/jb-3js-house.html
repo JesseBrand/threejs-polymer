@@ -1,0 +1,98 @@
+<link rel="import" href="../../../../bower_components/polymer/polymer.html" />
+<link rel="import" href="../../generic/jb-3js-cube/jb-3js-cube.html" />
+<link rel="import" href="../jb-3js-pillar/jb-3js-pillar.html" />
+<link rel="import" href="../../generic/jb-3js-cylinder/jb-3js-cylinder.html" />
+<link rel="import" href="../../generic/jb-3js-spacer/jb-3js-spacer.html" />
+<link rel="import" href="../../generic/jb-3js-triangular-prism/jb-3js-triangular-prism.html" />
+<link rel="import" href="../../generic/jb-3js-hollow-triangular-prism/jb-3js-hollow-triangular-prism.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-clamp/jb-3js-helper-clamp.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-color/jb-3js-helper-color.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-position/jb-3js-helper-position.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-shadow/jb-3js-helper-shadow.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-size/jb-3js-helper-size.html" />
+<dom-module id="jb-3js-house">
+    <template>
+        <jb-3js-cube shadow="{{shadow}}" color="{{color}}" x="{{x}}" y="{{bottomY}}" z="{{z}}" width="{{width}}" height="{{wallThickness}}" depth="{{depth}}">
+		    <content clamp select=".content"></content>
+	        <jb-3js-cube clamp shadow="{{shadow}}" color="{{color}}" x="{{wallWX}}" z="{{z}}" width="{{wallThickness}}" height="{{height}}" depth="{{depth}}"></jb-3js-cube>
+	        <jb-3js-cube clamp shadow="{{shadow}}" color="{{color}}" x="{{wallEX}}" z="{{z}}" width="{{wallThickness}}" height="{{height}}" depth="{{depth}}"></jb-3js-cube>
+	        <jb-3js-cube clamp shadow="{{shadow}}" color="{{color}}" x="{{x}}" z="{{wallNZ}}" width="{{width}}" height="{{height}}" depth="{{wallThickness}}"></jb-3js-cube>
+	        <jb-3js-cube clamp shadow="{{shadow}}" color="{{color}}" x="{{x}}" z="{{wallSZ}}" width="{{width}}" height="{{height}}" depth="{{wallThickness}}"></jb-3js-cube>
+            <jb-3js-spacer clamp height="{{height}}" x="{{x}}" z="{{z}}">
+	        	<jb-3js-triangular-prism clamp shadow="{{shadow}}" color="{{color}}" x="{{x}}" z="{{z}}" width="{{width}}" height="{{roofInnerHeight}}" depth="{{depth}}"></jb-3js-triangular-prism>
+		        <jb-3js-hollow-triangular-prism clamp shadow="{{shadow}}" color="{{color}}" x="{{x}}" z="{{z}}" width="{{width}}" height="{{roofHeight}}" depth="{{roofDepth}}" thickness="{{roofOuterHeight}}">
+		            <content></content>
+		        </jb-3js-hollow-triangular-prism>
+	        </jb-3js-spacer>
+	    </jb-3js-cube>
+    </template>
+</dom-module>
+<script>
+    'use strict';
+
+    Polymer({
+        is: 'jb-3js-house',
+        behaviors: [PositionBehavior, SizeBehavior, ColorBehavior, ShadowBehavior, ClampBehavior],
+        properties: {
+        	roofHeight: {
+                type: Number,
+                value: 1
+            },
+            wallThickness: {
+            	type: Number,
+            	value: .1
+            },
+            roofOverlap: {
+            	type: Number,
+            	value: 1
+            },
+            bottomY: {
+            	type: Number,
+            	computed: '_getBottomY(y, height, wallThickness)'
+            },
+            roofInnerHeight: {
+                type: Number,
+                computed: '_getRoofInnerHeight(roofHeight)'
+            },
+            roofOuterHeight: {
+                type: Number,
+                computed: '_getRoofOuterHeight(roofHeight)'
+            },
+            roofDepth: {
+            	type: Number,
+            	computed: '_getRoofDepth(depth, roofOverlap)'
+            },
+            wallWX: {
+            	type: Number,
+            	computed: '_getWallLocation(x, wallThickness, width)'
+            },
+            wallEX: {
+            	type: Number,
+            	computed: '_getWallLocation(x, width, wallThickness)'
+            },
+            wallNZ: {
+            	type: Number,
+            	computed: '_getWallLocation(z, wallThickness, depth)'
+            },
+            wallSZ: {
+            	type: Number,
+            	computed: '_getWallLocation(z, depth, wallThickness)'
+            }
+        },
+        _getBottomY: function(y, height, wallThickness) {
+        	return y - height / 2 + wallThickness / 2;
+        },
+        _getRoofInnerHeight: function(roofHeight) {
+            return roofHeight * .8;
+        },
+        _getRoofOuterHeight: function(roofHeight) {
+            return roofHeight * .2;
+        },
+        _getRoofDepth: function(depth, roofOverlap) {
+        	return depth + 2 * roofOverlap;
+        },
+        _getWallLocation: function(origin, increase, decrease) {
+        	return origin + increase / 2 - decrease / 2;
+        }
+    });
+</script>
