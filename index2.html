@@ -7,7 +7,8 @@
         <link rel="import" href="app/components/generic/jb-3js-directional-light/jb-3js-directional-light.html" />
         <link rel="import" href="app/components/generic/jb-3js-html-screen/jb-3js-html-screen.html" />
         <link rel="import" href="app/components/generic/jb-3js-plane/jb-3js-plane.html" />
-        <link rel="import" href="app/components/generic/jb-3js-shipcontrols/jb-3js-shipcontrols.html" />
+        <link rel="import" href="app/components/generic/jb-3js-point-light/jb-3js-point-light.html" />
+        <link rel="import" href="app/components/generic/jb-3js-flightcontrols/jb-3js-flightcontrols.html" />
         <link rel="import" href="app/components/generic/jb-3js-skybox/jb-3js-skybox.html" />
         <link rel="import" href="app/components/generic/jb-3js-terrain/jb-3js-terrain.html" />
         <link rel="import" href="app/components/generic/jb-3js-terrain-plateau/jb-3js-terrain-plateau.html" />
@@ -20,15 +21,16 @@
     </head>
     <body>
         <jb-3js-container css-renderer>
-            <jb-3js-shipcontrols shadow  y="80" z="100"></jb-3js-shipcontrols>
+            <jb-3js-flightcontrols shadow  y="80" z="100"></jb-3js-flightcontrols>
             <jb-3js-skybox textured width="2048" depth="2048" height="2048" skybox-texture="resources/img/cloudySea.jpg"></jb-3js-skybox>
             <jb-3js-directional-light shadow color="0xffffe0" x="100" y="50" z="50" map-size="4096"></jb-3js-directional-light>
             <jb-3js-plane shadow color="0x000000" width="1024" depth="1024"></jb-3js-plane>
             <jb-3js-plane shadow color="0x2020e0" y="30" width="1024" depth="1024" opacity=".8"></jb-3js-plane>
             <jb-3js-terrain shadow color="0x60d020" shader-name="terra" width="512" height="512" depth="512" scale="2" smoothing-passes="2">
                 <jb-3js-terrain-plateau y="75" z="-175" width="100" depth="200"></jb-3js-terrain-plateau>
-                <jb-3js-house shadow clamp color="0xff0000" z="-125" width="80" height="70" depth="100" roof-overlap="2" roof-height="10" wall-thickness="2">
-                	<jb-3js-html-screen class="content" clamp shadow color="0x202020" width="50" height="50" depth="5" z="-125" url="http://www.ing.nl" site-scale-factor="25"></jb-3js-html-screen>
+                <jb-3js-house shadow clamp color="0xff6200" z="-125" width="80" height="70" depth="100" roof-overlap="2" roof-height="10" wall-thickness="2">
+                	<jb-3js-html-screen class="content" clamp shadow color="0x202020" width="50" height="50" depth="5" z="-165" url="http://www.ing.nl" site-scale-factor="25"></jb-3js-html-screen>
+                	<jb-3js-point-light class="content" clamp y="50"></jb-3js-point-light>
                	</jb-3js-house>
             </jb-3js-terrain>
         </jb-3js-container>
