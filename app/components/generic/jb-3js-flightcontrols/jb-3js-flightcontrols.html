@@ -15,7 +15,11 @@
     Polymer({
         is: 'jb-3js-flightcontrols',
         properties: {
-            light: 'Boolean'
+            light: 'Boolean',
+            speed: {
+                type: Number,
+                value: 1
+            }
         },
         behaviors: [PositionBehavior, ColorBehavior, ShadowBehavior, DebugBehavior],
         ready: function() {
@@ -52,22 +56,22 @@
                     var velocity = new THREE.Vector3();
                     velocity.set(0, 0, 0);
                     if (this.moveForward) {
-                        velocity.z--;
+                        velocity.z -= this.polymerComponent.speed;
                     }
                     if (this.moveBackward) {
-                        velocity.z++;
+                        velocity.z += this.polymerComponent.speed;
                     }
                     if (this.moveLeft) {
-                        velocity.x--;
+                        velocity.x -= this.polymerComponent.speed;
                     }
                     if (this.moveRight) {
-                        velocity.x++;
+                        velocity.x += this.polymerComponent.speed;
                     }
                     if (this.moveDown) {
-                        velocity.y--;
+                        velocity.y -= this.polymerComponent.speed;
                     }
                     if (this.moveUp) {
-                        velocity.y++;
+                        velocity.y += this.polymerComponent.speed;
                     }
                     if (this.pause) {
                         debugger;
