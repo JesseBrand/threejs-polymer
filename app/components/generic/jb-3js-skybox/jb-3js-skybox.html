@@ -59,6 +59,12 @@
             }
             this.mesh.geometry = geometry;
             this.fire('add-to-scene', this.mesh);
+            var self = this;
+            this.fire('register-renderer-component', function(renderer, scene, camera) {
+                self.x = camera.position.x;
+                self.y = camera.position.y;
+                self.z = camera.position.z;
+            });
         }
     });
 </script>
