@@ -3,14 +3,18 @@
 <link rel="import" href="../../behaviors/jb-3js-helper-color/jb-3js-helper-color.html" />
 <link rel="import" href="../../behaviors/jb-3js-helper-opacity/jb-3js-helper-opacity.html" />
 <link rel="import" href="../../behaviors/jb-3js-helper-position/jb-3js-helper-position.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-rotation/jb-3js-helper-rotation.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-scale/jb-3js-helper-scale.html" />
 <link rel="import" href="../../behaviors/jb-3js-helper-shadow/jb-3js-helper-shadow.html" />
 <link rel="import" href="../../behaviors/jb-3js-helper-size/jb-3js-helper-size.html" />
 <dom-module id="jb-3js-html-screen">
     <template>
-        <jb-3js-cube shadow="{{shadow}}" color="{{color}}" x="{{x}}" y="{{y}}" z="{{z}}" width="{{width}}" height="{{height}}" depth="{{depth}}">
-            <content></content>
-        </jb-3js-cube>
-        <jb-3js-html-element x="{{x}}" y="{{y}}" z="{{screenZ}}" width="{{screenWidth}}" depth="{{screenHeight}}" url="{{url}}" site-scale-factor="{{siteScaleFactor}}"></jb-3js-html-element>
+        <jb-3js-transformation x="{{x}}" y="{{y}}" z="{{z}}" rotation-x="{{rotationX}}" rotation-y="{{rotationY}}" rotation-z="{{rotationZ}}" scale-x="{{scaleX}}" scale-y="{{scaleY}}" scale-z="{{scaleZ}}">
+            <jb-3js-cube shadow="{{shadow}}" color="{{color}}" width="{{width}}" height="{{height}}" depth="{{depth}}">
+                <content></content>
+            </jb-3js-cube>
+            <jb-3js-html-element z="{{screenZ}}" width="{{screenWidth}}" depth="{{screenHeight}}" url="{{url}}" site-scale-factor="{{siteScaleFactor}}"></jb-3js-html-element>
+        </jb-3js-transformation>
     </template>
 </dom-module>
 <script>
@@ -18,7 +22,7 @@
 
     Polymer({
         is: 'jb-3js-html-screen',
-        behaviors: [PositionBehavior, SizeBehavior, ColorBehavior, ShadowBehavior, OpacityBehavior, ClampBehavior],
+        behaviors: [PositionBehavior, SizeBehavior, ColorBehavior, ShadowBehavior, OpacityBehavior, ClampBehavior, RotationBehavior, ScaleBehavior],
         properties: {
             screenWidth: {
                 type: Number,
@@ -30,7 +34,7 @@
             },
             screenZ: {
                 type: Number,
-                computed: '_getScreenZ(z, depth)'
+                computed: '_getScreenZ(depth)'
             },
             url: String,
             siteScaleFactor: {
@@ -44,8 +48,8 @@
         _getScreenHeight: function(height) {
             return height * .9;
         },
-        _getScreenZ: function(z, depth) {
-            return z + depth * .55;
+        _getScreenZ: function(depth) {
+            return depth * .55;
         }
     });
 </script>
