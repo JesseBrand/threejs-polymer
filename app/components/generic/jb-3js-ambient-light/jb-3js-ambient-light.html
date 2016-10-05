@@ -1,0 +1,23 @@
+<link rel="import" href="../../../../bower_components/polymer/polymer.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-color/jb-3js-helper-color.html" />
+<link rel="import" href="../../behaviors/jb-3js-helper-shadow/jb-3js-helper-shadow.html" />
+
+<dom-module id="jb-3js-ambient-light">
+    <template><content></content></template>
+</dom-module>
+<script>
+'use strict';
+
+Polymer({
+    is: 'jb-3js-ambient-light',
+    behaviors: [ColorBehavior, ShadowBehavior],
+    created: function() {
+        this.mesh = new THREE.AmbientLight();
+        this.mesh.name = 'Ambient Light';
+    },
+    attached: function() {
+        this.mesh.color = new THREE.Color(this.color);
+        this.fire('add-to-scene', this.mesh);
+    }
+});
+</script>
