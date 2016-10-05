@@ -24,9 +24,10 @@
         </style>
     </head>
     <body>
-        <jb-3js-container css-renderer>
+        <jb-3js-container css-renderer camera-far-plane="4096">
             <jb-3js-flightcontrols shadow  y="80" z="100" speed="5"></jb-3js-flightcontrols>
-            <jb-3js-skybox textured width="2048" depth="2048" height="2048" skybox-texture="resources/img/cloudySea.jpg"></jb-3js-skybox>
+            <jb-3js-skybox textured width="4096" depth="4096" height="4096" skybox-texture="resources/img/cloudySea.jpg"></jb-3js-skybox>
+            <jb-3js-ambient-light shadow color="0x050505"></jb-3js-ambient-light>
             <jb-3js-directional-light shadow color="0xffffe0" x="100" y="50" z="50" map-size="4096"></jb-3js-directional-light>
             <jb-3js-plane shadow color="0x000000" width="1024" depth="1024"></jb-3js-plane>
             <jb-3js-plane shadow color="0x2020e0" y="30" width="1024" depth="1024" opacity=".8"></jb-3js-plane>

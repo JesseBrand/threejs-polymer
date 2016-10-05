@@ -5,7 +5,6 @@
  -add terrain clamping
 -tweak reflection
 -reflection dynamics
--make camera dynamic
 -implement material behaviors on behaviors themselves
 -specific useful implementation
 -package structure
