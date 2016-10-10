@@ -2,6 +2,7 @@
 <link rel="import" href="jb-3js-helper-color.html" />
 <link rel="import" href="jb-3js-helper-debug.html" />
 <link rel="import" href="jb-3js-helper-position.html" />
+<link rel="import" href="jb-3js-helper-rotation.html" />
 <link rel="import" href="jb-3js-helper-shadow.html" />
 <script src="lib/controls.js"></script>
 <script src="lib/pointerlock.js"></script>
@@ -23,7 +24,7 @@
                 value: 1
             }
         },
-        behaviors: [PositionBehavior, ColorBehavior, ShadowBehavior, DebugBehavior],
+        behaviors: [PositionBehavior, ColorBehavior, ShadowBehavior, DebugBehavior, RotationBehavior],
         ready: function() {
             this.light = (typeof this.light) !== 'undefined';
         },
@@ -34,7 +35,7 @@
                     var keyHandler = new ShipKeyHandler(this);
                     document.addEventListener('keydown', keyHandler.keyDown, false);
                     document.addEventListener('keyup', keyHandler.keyUp, false);
-                    this.controls = new THREE.MyControls(details.camera);
+                    this.controls = new THREE.MyControls(details.camera, this.polymerComponent.getRotation());
                     this.ship = this.controls.getObject();
                     this.ship.position.set(this.polymerComponent.x, this.polymerComponent.y, this.polymerComponent.z);
                     this.polymerComponent.fire('addToScene', this.ship);
