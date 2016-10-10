@@ -2,10 +2,9 @@
 
 This project includes a library of elements to use three.js object and canvasses by using polymer elements.
 
-**Note - Jesse Brand - 2016/10/09**
-The repository is currently not in a state in which you can import it into any project and . Feel free to browse through it and use it as a resource for learning polymer and/or three.js, but I would suggest refraining from using the repo as-is in your projects until it is ready.
+The elements in this project are now usable from any other repository including the library. For some implementation examples, please have a look at the demo folder or the following repository:
 
-That said, I expect to have the repository ready to be used in such a way, including a first release tag, within a few days.
+<https://github.com/JesseBrand/jb-3js-experiments>
 
 ## Setup
 
