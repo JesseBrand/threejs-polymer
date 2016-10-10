@@ -1,0 +1,57 @@
+<link rel="import" href="components/polymer/polymer.html" />
+<link rel="import" href="jb-3js-helper-position.html" />
+<link rel="import" href="jb-3js-helper-target-position.html" />
+<link rel="import" href="jb-3js-helper-color.html" />
+<link rel="import" href="jb-3js-helper-shadow.html" />
+<link rel="import" href="jb-3js-helper-debug.html" />
+
+<dom-module id="jb-3js-directional-light">
+    <template><content></content></template>
+</dom-module>
+
+<script>
+'use strict';
+
+Polymer({
+    is: 'jb-3js-directional-light',
+    properties: {
+        cameraReach: {
+            type: 'Number',
+            value: 500
+        },
+        mapSize: {
+            type: 'Number',
+            value: 1024
+        }
+    },
+    behaviors: [PositionBehavior, TargetPositionBehavior, ColorBehavior, DebugBehavior, ShadowBehavior],
+    created: function() {
+        this.mesh = new THREE.DirectionalLight();
+        this.mesh.name = 'Directional Light';
+    },
+    ready: function() {
+        this.cameraReach = parseInt(this.cameraReach);
+    },
+    attached: function() {
+        this.mesh.color = new THREE.Color(this.color);
+        this.mesh.target.position.set(this.targetX, this.targetY, this.targetZ);
+        this.mesh.shadow.camera.position.set(this.x, this.y, this.z);
+        this.mesh.shadow.camera.near = -this.cameraReach;
+        this.mesh.shadow.camera.far = this.cameraReach;
+        this.mesh.shadow.camera.left = -this.cameraReach;
+        this.mesh.shadow.camera.right = this.cameraReach;
+        this.mesh.shadow.camera.top = this.cameraReach;
+        this.mesh.shadow.camera.bottom = -this.cameraReach;
+
+        this.mesh.shadow.mapSize.width = this.mapSize;
+        this.mesh.shadow.mapSize.height = this.mapSize;
+        this.fire('add-to-scene', this.mesh);
+
+        if (this.debug) {
+            var helper = new THREE.CameraHelper(this.mesh.shadow.camera);
+//            console.log(this.mesh.shadow.camera, helper);
+            this.fire('add-to-scene', new THREE.CameraHelper(this.mesh.shadow.camera));
+        }
+    }
+});
+</script>

@@ -1,0 +1,25 @@
+<link rel="import" href="components/polymer/polymer.html" />
+<link rel="import" href="jb-3js-helper-position.html" />
+<link rel="import" href="jb-3js-helper-color.html" />
+<link rel="import" href="jb-3js-helper-shadow.html" />
+
+<dom-module id="jb-3js-point-light">
+    <template><content></content></template>
+</dom-module>
+
+<script>
+'use strict';
+
+Polymer({
+    is: 'jb-3js-point-light',
+    behaviors: [PositionBehavior, ColorBehavior, ShadowBehavior],
+    created: function() {
+        this.mesh = new THREE.PointLight();
+        this.mesh.name = 'Point Light';
+    },
+    attached: function() {
+        this.mesh.color = new THREE.Color(this.color);
+        this.fire('add-to-scene', this.mesh);
+    }
+});
+</script>

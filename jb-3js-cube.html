@@ -1,0 +1,38 @@
+<link rel="import" href="components/polymer/polymer.html" />
+<link rel="import" href="jb-3js-helper-clamp.html" />
+<link rel="import" href="jb-3js-helper-color.html" />
+<link rel="import" href="jb-3js-helper-cube-texture.html" />
+<link rel="import" href="jb-3js-helper-opacity.html" />
+<link rel="import" href="jb-3js-helper-position.html" />
+<link rel="import" href="jb-3js-helper-shadow.html" />
+<link rel="import" href="jb-3js-helper-size.html" />
+
+<dom-module id="jb-3js-cube">
+    <template><content></content></template>
+</dom-module>
+<script>
+    'use strict';
+
+    Polymer({
+        is: 'jb-3js-cube',
+        behaviors: [PositionBehavior, SizeBehavior, ColorBehavior, ShadowBehavior, OpacityBehavior, ClampBehavior, CubeTextureBehavior],
+        created: function() {
+            this.mesh = new THREE.Mesh();
+            this.mesh.name = 'Cube';
+        },
+        attached: function() {
+            var textureMaterials = this.createTextureMaterials();
+            var defaultMaterial = new THREE.MeshPhongMaterial({color: this.color, opacity: this.opacity, transparent: this.transparent});
+            this.mesh.geometry = new THREE.CubeGeometry(this.width, this.height, this.depth);
+            this.mesh.material = new THREE.MeshFaceMaterial([ // TODO: Order may not be correct
+                this.leftTexture ? textureMaterials[this.leftTexture] : defaultMaterial,
+                this.rightTexture ? textureMaterials[this.rightTexture] : defaultMaterial,
+                this.topTexture ? textureMaterials[this.topTexture] : defaultMaterial,
+                this.bottomTexture ? textureMaterials[this.bottomTexture] : defaultMaterial,
+                this.frontTexture ? textureMaterials[this.frontTexture] : defaultMaterial,
+                this.backTexture ? textureMaterials[this.backTexture] : defaultMaterial
+            ]);
+            this.fire('add-to-scene', this.mesh);
+        }
+    });
+</script>
