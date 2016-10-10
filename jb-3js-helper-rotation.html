@@ -25,6 +25,9 @@ var RotationBehavior = {
             this.cssMesh.rotation.y = toRad(this.rotationY);
             this.cssMesh.rotation.z = toRad(this.rotationZ);
         }
+    },
+    getRotation: function() {
+    	return {x: this.rotationX, y: this.rotationY, z: this.rotationZ};
     }
 };
 function toRad(degrees) {
