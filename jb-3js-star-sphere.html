@@ -1,0 +1,55 @@
+<link rel="import" href="/components/polymer/polymer.html" />
+<link rel="import" href="jb-3js-helper-clamp.html" />
+<link rel="import" href="jb-3js-helper-color.html" />
+<link rel="import" href="jb-3js-helper-position.html" />
+<link rel="import" href="jb-3js-helper-shadow.html" />
+
+<dom-module id="jb-3js-star-sphere">
+    <template><content></content></template>
+</dom-module>
+
+<script>
+    'use strict';
+
+    Polymer({
+        is: 'jb-3js-star-sphere',
+        properties: {
+        	name: {
+        		type: String,
+        		value: 'Star Sphere'
+        	},
+            radius: {
+                type: Number,
+                value: 5
+            },
+            starCount: {
+            	type: Number,
+            	value: 1000
+            }
+        },
+        behaviors: [PositionBehavior, ColorBehavior, ShadowBehavior, ClampBehavior],
+        created: function() {
+            this.mesh = new THREE.Points();
+        },
+        ready: function() {
+        	this.mesh.name = this.name;
+            this.radius = parseFloat(this.radius);
+            this.height = 2 * this.radius;
+        },
+        attached: function() {
+       		var pointGeo = new THREE.Geometry();
+       		for (var i = 0; i < this.starCount; i ++ ) {
+       			var lat = THREE.Math.randFloat(0, 2 * Math.PI);
+       			var lng = THREE.Math.randFloat(0, 2 * Math.PI);
+       			var v = new THREE.Vector3();
+       			v.x = Math.sin(lng) * Math.cos(lat) * this.radius;
+       			v.y = Math.sin(lat) * this.radius;
+       			v.z = Math.cos(lng) * Math.cos(lat) * this.radius;
+       			pointGeo.vertices.push(v);
+       		}
+       		this.mesh.geometry = pointGeo;
+       		this.mesh.material = new THREE.PointsMaterial({color: this.color, size: 0.1});
+            this.fire('add-to-scene', this.mesh);
+        }
+    });
+</script>
