@@ -1,0 +1,110 @@
+<link rel="import" href="/components/polymer/polymer.html" />
+<link rel="import" href="jb-3js-helper-color.html" />
+<link rel="import" href="jb-3js-helper-position.html" />
+
+<dom-module id="jb-3js-ellipse">
+    <template>
+        <content></content>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'jb-3js-ellipse',
+        behaviors: [ColorBehavior],
+        properties: {
+        	name: {
+        		type: String,
+        		value: 'Ellipse'
+        	},
+        	semiMajorAxis: {
+        		type: Number,
+        		value: 1
+        	},
+        	eccentricity: {
+        		type: Number,
+        		value: 0
+        	},
+			semiMinorAxis: {
+				type: Number,
+				computed: '_getSemiMinorAxis(semiMajorAxis, eccentricity)'
+			},
+			semiLatusRectum: {
+				type: Number,
+				computed: '_getSemiLatusRectum(semiMajorAxis, semiMinorAxis)'
+			},
+			focusToCenterDistance: {
+				type: Number,
+				computed: '_getFocusToCenterDistance(semiMajorAxis, eccentricity)'
+			},
+			drawMajorAxis: Boolean,
+			drawMinorAxis: Boolean,
+			drawLatusRectum: Boolean
+        },
+        observers: [
+        	'propertiesChanged(semiMajorAxis, semiMinorAxis)'
+        ],
+        created: function() {
+       		var material = new THREE.LineBasicMaterial(this.color);
+
+       		// Create the final Object3d to add to the scene
+       		this.mesh = new THREE.Line(new THREE.Geometry(), material);
+       		this.majorLineMesh = new THREE.Line(new THREE.Geometry(), material);
+       		this.minorLineMesh = new THREE.Line(new THREE.Geometry(), material);
+       		this.latusRectumLineMesh = new THREE.Line(new THREE.Geometry(), material);
+       		this.majorLineMesh.geometry.vertices.push(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0));
+       		this.minorLineMesh.geometry.vertices.push(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0));
+       		this.latusRectumLineMesh.geometry.vertices.push(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0));
+        },
+        propertiesChanged: function(a, b) {
+        	this.semiMajorAxis = a;
+        	this.semiMinorAxis = b;
+        	this._renewGeometry();
+        },
+        _renewGeometry: function() {
+       		var curve = new THREE.EllipseCurve(
+           		0, 0,             // ax, aY
+          		this.semiMajorAxis, this.semiMinorAxis, // xRadius, yRadius
+          		0,  2 * Math.PI,  // aStartAngle, aEndAngle
+         		false,            // aClockwise
+          		0                 // aRotation
+          	);
+          	var path = new THREE.Path(curve.getPoints(50));
+          	this.mesh.geometry = path.createPointsGeometry(50);
+          	this.majorLineMesh.geometry.vertices[0].x = -this.semiMajorAxis;
+          	this.majorLineMesh.geometry.vertices[1].x = this.semiMajorAxis;
+          	this.minorLineMesh.geometry.vertices[0].y = -this.semiMinorAxis;
+          	this.minorLineMesh.geometry.vertices[1].y = this.semiMinorAxis;
+          	this.latusRectumLineMesh.geometry.vertices[0].x = -this.focusToCenterDistance;
+          	this.latusRectumLineMesh.geometry.vertices[1].x = -this.focusToCenterDistance;
+          	this.latusRectumLineMesh.geometry.vertices[0].y = -this.semiLatusRectum;
+          	this.latusRectumLineMesh.geometry.vertices[1].y = this.semiLatusRectum;
+        },
+        ready: function() {
+	        this.mesh.name = this.name;
+	        this.mesh.material.color = new THREE.Color(this.color);
+	        this._renewGeometry();
+        },
+        attached: function() {
+            this.fire('add-to-scene', this.mesh);
+            if (this.drawMajorAxis) {
+            	this.fire('add-to-scene', this.majorLineMesh);
+            }
+            if (this.drawMinorAxis) {
+            	this.fire('add-to-scene', this.minorLineMesh);
+            }
+            if (this.drawLatusRectum) {
+            	this.fire('add-to-scene', this.latusRectumLineMesh);
+            }
+        },
+        _getSemiMinorAxis: function(a, e) {
+           	return a * Math.sqrt(1 - (e * e));
+        },
+        _getFocusToCenterDistance: function(a, e) {
+        	return a * e;
+        },
+        _getSemiLatusRectum: function(a, b) {
+        	return b * b / a;
+        }
+    });
+</script>
