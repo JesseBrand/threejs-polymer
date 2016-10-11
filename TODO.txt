@@ -9,3 +9,5 @@
 -specific useful implementation
 -package structure
 -texture cylinders
+-support removing all elements from scene (and css)
+ 
