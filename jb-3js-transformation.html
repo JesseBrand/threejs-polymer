@@ -33,6 +33,16 @@ Polymer({
             this.mesh.add(event.detail);
             event.stopPropagation();
         });
+        this.addEventListener('remove-from-scene', function(event) {
+            if (event.detail === this.mesh) {
+                return;
+            }
+            if (!this.mesh) {
+            	return;
+            }
+            this.mesh.remove(event.detail);
+            event.stopPropagation();
+        });
         this.addEventListener('add-css-to-scene', function(event) {
             if (event.detail === this.cssMesh) {
                 return;
@@ -50,6 +60,16 @@ Polymer({
                 this.fire('add-css-to-scene', this.cssMesh);
             }
             this.cssMesh.add(event.detail);
+            event.stopPropagation();
+        });
+        this.addEventListener('remove-css-from-scene', function(event) {
+            if (event.detail === this.cssMesh) {
+                return;
+            }
+            if (!this.cssMesh) {
+            	return;
+            }
+            this.cssMesh.remove(event.detail);
             event.stopPropagation();
         });
     }

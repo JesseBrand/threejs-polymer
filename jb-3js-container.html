@@ -141,10 +141,22 @@
                     console.log('added mesh', mesh);
                 }
             },
+            removeFromScene: function(mesh) {
+                scene.remove(mesh);
+                if (this.debug) {
+                    console.log('removed mesh', mesh);
+                }
+            },
             addCssToScene: function(mesh) {
                 cssScene.add(mesh);
                 if (this.debug) {
                     console.log('added css', mesh);
+                }
+            },
+            removeCssFromScene: function(mesh) {
+                cssScene.remove(mesh);
+                if (this.debug) {
+                    console.log('removed css', mesh);
                 }
             },
             registerCameraHandler: function(handler) {
@@ -213,6 +225,12 @@
                 });
                 this.addEventListener('add-css-to-scene', function(event) {
                     controller.addCssToScene(event.detail);
+                });
+                this.addEventListener('remove-from-scene', function(event) {
+                    controller.removeFromScene(event.detail);
+                });
+                this.addEventListener('remove-css-from-scene', function(event) {
+                    controller.removeCssFromScene(event.detail);
                 });
                 this.addEventListener('register-camera-handler', function(event) {
                     controller.registerCameraHandler(event.detail);
