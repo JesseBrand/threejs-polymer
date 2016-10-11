@@ -33,7 +33,6 @@
         	this._renewGeometry();
         },
         _renewGeometry: function() {
-        	console.log('updating to', this.targetZ, this.lineMesh)
           	this.lineMesh.geometry.vertices[0].set(this.x, this.y, this.z);
           	this.lineMesh.geometry.vertices[1].set(this.targetX, this.targetY, this.targetZ);
           	this.lineMesh.geometry.verticesNeedUpdate = true;
