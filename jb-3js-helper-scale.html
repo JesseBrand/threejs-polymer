@@ -20,21 +20,16 @@ var ScaleBehavior = {
         }
     },
     observers: [
-        'globalScaleChanged(scale)'
+		'_updateScale(scale, scaleX, scaleY, scaleZ)'
     ],
-    ready: function() {
-        this.applyScale();
-    },
-    globalScaleChanged(scale) {
-        this.applyScale();
-    },
     applyScale: function() {
-        this.scale = parseInt(this.scale);
-        this.scaleX = this.scaleX ? parseInt(this.scaleX) : this.scale;
-        this.scaleY = this.scaleY ? parseInt(this.scaleY) : this.scale;
-        this.scaleZ = this.scaleZ ? parseInt(this.scaleZ) : this.scale;
+    	this._updateScale(this.scale, this.scaleX, this.scaleY, this.scaleZ);
     },
-    attached: function() {
+    _updateScale: function(s, sX, sY, sZ) {
+        this.scale = parseFloat(s);
+        this.scaleX = sX ? parseFloat(sX) : s;
+        this.scaleY = sY ? parseFloat(sY) : s;
+        this.scaleZ = sZ ? parseFloat(sZ) : s;
         if (this.mesh) {
             this.mesh.scale.x = this.scaleX;
             this.mesh.scale.y = this.scaleY;
@@ -45,6 +40,9 @@ var ScaleBehavior = {
             this.cssMesh.scale.y = this.scaleY;
             this.cssMesh.scale.z = this.scaleZ;
         }
+    },
+    attached: function() {
+    	this.applyScale();
     }
 };
 </script>
