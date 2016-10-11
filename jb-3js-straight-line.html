@@ -1,0 +1,50 @@
+<link rel="import" href="/components/polymer/polymer.html" />
+<link rel="import" href="jb-3js-helper-color.html" />
+<link rel="import" href="jb-3js-helper-position.html" />
+<link rel="import" href="jb-3js-helper-target-position.html" />
+
+<dom-module id="straight-line">
+    <template>
+        <content></content>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'jb-3js-straight-line',
+        behaviors: [PositionBehavior, TargetPositionBehavior, ColorBehavior],
+        properties: {
+        	name: {
+        		type: String,
+        		value: 'Straight Line'
+        	}
+        },
+        observers: [
+        	'propertiesChanged(x, y, z, targetX, targetY, targetZ)'
+        ],
+        created: function() {
+       		var material = new THREE.LineBasicMaterial();
+
+       		// Create the final Object3d to add to the scene
+       		this.lineMesh = new THREE.Line(new THREE.Geometry(), material);
+       		this.lineMesh.geometry.vertices.push(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0));
+        },
+        propertiesChanged: function(x0, y0, z0, x1, y1, z1) {
+        	this._renewGeometry();
+        },
+        _renewGeometry: function() {
+        	console.log('updating to', this.targetZ, this.lineMesh)
+          	this.lineMesh.geometry.vertices[0].set(this.x, this.y, this.z);
+          	this.lineMesh.geometry.vertices[1].set(this.targetX, this.targetY, this.targetZ);
+          	this.lineMesh.geometry.verticesNeedUpdate = true;
+        },
+        ready: function() {
+	        this.lineMesh.name = this.name;
+	        this.lineMesh.material.color = new THREE.Color(this.color);
+	        this._renewGeometry();
+        },
+        attached: function() {
+            this.fire('add-to-scene', this.lineMesh);
+        }
+    });
+</script>
