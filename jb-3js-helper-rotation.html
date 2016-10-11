@@ -1,3 +1,4 @@
+<link rel="import" href="jb-3js-helper-math.html" />
 <script>
 var RotationBehavior = {
     properties: {
@@ -22,21 +23,18 @@ var RotationBehavior = {
     },
     _updateRotation: function(rX, rY, rZ) {
         if (this.mesh) {
-            this.mesh.rotation.x = toRad(rX);
-            this.mesh.rotation.y = toRad(rY);
-            this.mesh.rotation.z = toRad(rZ);
+            this.mesh.rotation.x = Math.rad(rX);
+            this.mesh.rotation.y = Math.rad(rY);
+            this.mesh.rotation.z = Math.rad(rZ);
         }
         if (this.cssMesh) {
-            this.cssMesh.rotation.x = toRad(rX);
-            this.cssMesh.rotation.y = toRad(rY);
-            this.cssMesh.rotation.z = toRad(rZ);
+            this.cssMesh.rotation.x = Math.rad(rX);
+            this.cssMesh.rotation.y = Math.rad(rY);
+            this.cssMesh.rotation.z = Math.rad(rZ);
         }
     },
     getRotation: function() {
     	return {x: this.rotationX, y: this.rotationY, z: this.rotationZ};
     }
 };
-function toRad(degrees) {
-    return degrees * Math.PI / 180;
-}
 </script>
