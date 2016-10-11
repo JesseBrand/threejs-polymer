@@ -14,16 +14,22 @@ var RotationBehavior = {
             value: 0
         }
     },
+    observers: [
+		'_updateRotation(rotationX, rotationY, rotationZ)'
+    ],
     attached: function() {
+    	this._updateRotation(this.rotationX, this.rotationY, this.rotationZ);
+    },
+    _updateRotation: function(rX, rY, rZ) {
         if (this.mesh) {
-            this.mesh.rotation.x = toRad(this.rotationX);
-            this.mesh.rotation.y = toRad(this.rotationY);
-            this.mesh.rotation.z = toRad(this.rotationZ);
+            this.mesh.rotation.x = toRad(rX);
+            this.mesh.rotation.y = toRad(rY);
+            this.mesh.rotation.z = toRad(rZ);
         }
         if (this.cssMesh) {
-            this.cssMesh.rotation.x = toRad(this.rotationX);
-            this.cssMesh.rotation.y = toRad(this.rotationY);
-            this.cssMesh.rotation.z = toRad(this.rotationZ);
+            this.cssMesh.rotation.x = toRad(rX);
+            this.cssMesh.rotation.y = toRad(rY);
+            this.cssMesh.rotation.z = toRad(rZ);
         }
     },
     getRotation: function() {
