@@ -42,7 +42,7 @@
 			drawLatusRectum: Boolean
         },
         observers: [
-        	'propertiesChanged(semiMajorAxis, semiMinorAxis)'
+        	'propertiesChanged(semiMajorAxis, eccentricity, semiMinorAxis, semiLatusRectum, focusToCenterDistance)'
         ],
         created: function() {
        		var material = new THREE.LineBasicMaterial(this.color);
@@ -56,9 +56,9 @@
        		this.minorLineMesh.geometry.vertices.push(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0));
        		this.latusRectumLineMesh.geometry.vertices.push(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0));
         },
-        propertiesChanged: function(a, b) {
+        propertiesChanged: function(a, e) {
         	this.semiMajorAxis = a;
-        	this.semiMinorAxis = b;
+        	this.eccentricity = e;
         	this._renewGeometry();
         },
         _renewGeometry: function() {
@@ -79,6 +79,7 @@
           	this.latusRectumLineMesh.geometry.vertices[1].x = -this.focusToCenterDistance;
           	this.latusRectumLineMesh.geometry.vertices[0].y = -this.semiLatusRectum;
           	this.latusRectumLineMesh.geometry.vertices[1].y = this.semiLatusRectum;
+          	this.latusRectumLineMesh.geometry.verticesNeedUpdate = true;
         },
         ready: function() {
 	        this.mesh.name = this.name;
