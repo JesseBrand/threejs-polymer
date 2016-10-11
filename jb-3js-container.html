@@ -12,7 +12,14 @@
             display: inline-block;
             box-sizing: border-box;
             position: relative;
-        }.blocker, .instructions {
+        }
+        paper-card {
+        	padding: 20px;
+        }
+        .card-content {
+        	padding: 0;
+        }
+        .blocker, .instructions {
              width: 100%;
              height: 100%;
          }
@@ -56,18 +63,18 @@
         <paper-card>
             <div class="card-content">
                 <content></content>
+		        <div class="blocker">
+		            <div class="instructions">Click to grab focus</div>
+		        </div>
             </div>
         </paper-card>
-        <div class="blocker">
-            <div class="instructions">Click here</div>
-        </div>
     </template>
 </dom-module>
 
 <script>
     (function() {
-        var width = window.innerWidth; // TODO: dynamically
-        var height = window.innerHeight;
+        var width;
+        var height;
 
         var scene;
         var cssScene;
@@ -89,6 +96,14 @@
             },
             _finalize: function(detail) {
                 // finalize with attribute data
+                width = detail.viewWidth || window.innerWidth - 56;
+                height = detail.viewHeight || window.innerHeight - 56;
+                if (glRenderer) {
+                	glRenderer.setSize(width, height);
+                }
+                if (cssRenderer) {
+                    cssRenderer.setSize(width, height);
+                }
                 this.debug = detail.debug;
                 camera = new THREE.PerspectiveCamera(80, width / height, .1, detail.cameraFarPlane);
                 if (typeof detail.cssRenderer !== 'undefined') {
@@ -102,7 +117,6 @@
                 scene = new THREE.Scene();
 
                 glRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
-                glRenderer.setSize(width, height);
                 glRenderer.domElement.className = 'glRenderer style-scope jb-3js-container';
 
                 glRenderer.shadowMap.enabled = true;
@@ -184,6 +198,8 @@
                     type: Number,
                     value: 0x000000
                 },
+                width: Number,
+                height: Number,
                 cameraFarPlane: {
                     type: Number,
                     value: 2048
@@ -206,7 +222,7 @@
                 });
             },
             ready: function() {
-                controller._finalize({clearColor: this.clearColor, cameraFarPlane: this.cameraFarPlane, cssRenderer: this.cssRenderer, debug: this.debug});
+                controller._finalize({clearColor: this.clearColor, cameraFarPlane: this.cameraFarPlane, cssRenderer: this.cssRenderer, debug: this.debug, viewWidth: this.width, viewHeight: this.height});
             },
             attached: function() {
                 var container = Polymer.dom(this.root);
