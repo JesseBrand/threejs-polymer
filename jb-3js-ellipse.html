@@ -98,6 +98,12 @@
             	this.fire('add-to-scene', this.latusRectumLineMesh);
             }
         },
+        detached: function() {
+            this.fire('remove-from-scene', this.mesh);
+           	this.fire('remove-from-scene', this.majorLineMesh);
+           	this.fire('remove-from-scene', this.minorLineMesh);
+           	this.fire('remove-from-scene', this.latusRectumLineMesh);
+        },
         _getSemiMinorAxis: function(a, e) {
            	return a * Math.sqrt(1 - (e * e));
         },
